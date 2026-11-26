@@ -29,7 +29,9 @@ The site covers the full studio presence in one page:
 
 ```text
 .
-├── index.html   # Complete markup, design tokens, styles, data, and scripts
+├── index.html       # Complete markup, design tokens, styles, data, and scripts
+├── og-preview.jpg   # 1200x630 Open Graph & Twitter Card share preview
+├── favicon.png      # Site icon
 └── README.md
 ```
 
