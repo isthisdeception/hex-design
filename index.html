@@ -1,0 +1,3597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hex Design — Independent Design Studio</title>
+  <meta name="description" content="In this era of AI slop, I design and build brands, Posters and interfaces that feel alive." />
+
+  <!-- Preconnect & Google Fonts: Cal Sans + Manrope + Inter fallback -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cal+Sans&family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN for responsive layout utilities -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Lenis Smooth Scroll via jsDelivr CDN (graceful native fallback handled in JS) -->
+  <script defer src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+
+  <style>
+    /* ==========================================================================
+       1. OX FRAMER MONOCHROME DESIGN TOKENS & TYPOGRAPHY
+       ========================================================================== */
+    @font-face {
+      font-family: "Cal Sans";
+      src: url("https://fonts.gstatic.com/s/calsans/v2/fdN99sWUv3gWqXxqqSBevloE4LZx.woff2") format("woff2");
+      font-display: swap;
+      font-style: normal;
+      font-weight: 400;
+    }
+
+    :root {
+      --bg-light: #ededed;
+      --surface-white: #ffffff;
+      --bg-dark: #0f0f0f;
+      --surface-dark: #191919;
+      --surface-dark-elevated: #171717;
+      --text-dark: #0f0f0f;
+      --text-secondary: #6b6b6b;
+      --text-muted-light: #8e8e8e;
+      --text-light: #ffffff;
+      --text-body-dark: #bdbdbd;
+      --text-muted-dark: #8e8e8e;
+      --border-light: rgba(15, 15, 15, 0.13);
+      --border-light-soft: rgba(15, 15, 15, 0.08);
+      --border-dark: rgba(255, 255, 255, 0.14);
+      --border-dark-strong: rgba(255, 255, 255, 0.22);
+      --live-dot: #2cc66b;
+      --ease-ox: cubic-bezier(0.22, 1, 0.36, 1);
+      --font-display: "Cal Sans", "Inter", sans-serif;
+      --font-ui: "Manrope", "Inter", sans-serif;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background-color: var(--bg-dark);
+    }
+
+    html.lenis, html.lenis body {
+      height: auto;
+    }
+
+    .lenis.lenis-smooth {
+      scroll-behavior: auto !important;
+    }
+
+    .lenis.lenis-stopped {
+      overflow: hidden;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-ui);
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
+
+    /* Subtle Editorial Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-light);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(15, 15, 15, 0.24);
+      border-radius: 999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(15, 15, 15, 0.45);
+    }
+
+    .font-display {
+      font-family: var(--font-display);
+      font-weight: 400;
+    }
+
+    .ox-container {
+      width: 100%;
+      max-width: 1280px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Eyebrow Labels & Status Dots */
+    .ox-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-ui);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      line-height: 1.2;
+    }
+
+    .ox-eyebrow--dark {
+      color: var(--text-muted-dark);
+    }
+
+    .ox-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background-color: var(--text-secondary);
+      flex-shrink: 0;
+    }
+
+    .ox-dot--dark {
+      background-color: var(--text-muted-dark);
+    }
+
+    .ox-live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background-color: var(--live-dot);
+      flex-shrink: 0;
+      box-shadow: 0 0 0 0 rgba(44, 198, 107, 0.55);
+      animation: livePulse 2.2s infinite;
+    }
+
+    @keyframes livePulse {
+      0% { box-shadow: 0 0 0 0 rgba(44, 198, 107, 0.55); }
+      70% { box-shadow: 0 0 0 7px rgba(44, 198, 107, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(44, 198, 107, 0); }
+    }
+
+    /* OX Display Heading Scales */
+    .ox-h1 {
+      font-family: var(--font-display);
+      font-size: clamp(66px, 13.5vw, 196px);
+      line-height: 0.84;
+      letter-spacing: -0.035em;
+      text-transform: uppercase;
+      font-weight: 400;
+      color: var(--text-dark);
+    }
+
+    .ox-h2 {
+      font-family: var(--font-display);
+      font-size: clamp(46px, 7.6vw, 102px);
+      line-height: 0.9;
+      letter-spacing: -0.025em;
+      text-transform: uppercase;
+      font-weight: 400;
+    }
+
+    .ox-h4 {
+      font-family: var(--font-display);
+      font-size: clamp(24px, 2.7vw, 38px);
+      line-height: 1.02;
+      letter-spacing: -0.015em;
+      text-transform: uppercase;
+      font-weight: 400;
+    }
+
+    .ox-h5 {
+      font-family: var(--font-display);
+      font-size: clamp(20px, 2vw, 26px);
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      font-weight: 400;
+    }
+
+    .ox-statement {
+      font-family: var(--font-display);
+      font-size: clamp(26px, 3.6vw, 48px);
+      line-height: 1.08;
+      letter-spacing: -0.015em;
+      font-weight: 400;
+    }
+
+    /* ==========================================================================
+       2. OX ROLLING-LABEL PILL BUTTONS (.ox-btn)
+       ========================================================================== */
+    .ox-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      height: 54px;
+      padding: 8px 8px 8px 24px;
+      border-radius: 999px;
+      font-family: var(--font-ui);
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: transform 0.35s var(--ease-ox), background-color 0.3s ease, border-color 0.3s ease;
+      user-select: none;
+      white-space: nowrap;
+      position: relative;
+    }
+
+    .ox-btn:active {
+      transform: scale(0.975);
+    }
+
+    .ox-btn__mask {
+      display: block;
+      height: 20px;
+      line-height: 20px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .ox-btn__track {
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.42s var(--ease-ox);
+      will-change: transform;
+    }
+
+    .ox-btn__text {
+      display: block;
+      height: 20px;
+      line-height: 20px;
+    }
+
+    .ox-btn:hover .ox-btn__track,
+    .ox-btn:focus-visible .ox-btn__track {
+      transform: translateY(-20px);
+    }
+
+    .ox-btn__icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: transform 0.42s var(--ease-ox), background-color 0.3s ease;
+    }
+
+    .ox-btn__icon svg {
+      width: 16px;
+      height: 16px;
+      transition: transform 0.42s var(--ease-ox);
+    }
+
+    .ox-btn:hover .ox-btn__icon svg {
+      transform: translate(2px, -2px) rotate(12deg);
+    }
+
+    .ox-btn--dark {
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+    }
+    .ox-btn--dark .ox-btn__icon {
+      background-color: var(--surface-white);
+      color: var(--text-dark);
+    }
+    .ox-btn--dark:hover {
+      background-color: #1c1c1c;
+    }
+
+    .ox-btn--light {
+      background-color: var(--surface-white);
+      color: var(--text-dark);
+    }
+    .ox-btn--light .ox-btn__icon {
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+    }
+    .ox-btn--light:hover {
+      background-color: #f3f3f3;
+    }
+
+    .ox-btn--ghost {
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+      border-color: var(--border-light);
+    }
+    .ox-btn--ghost .ox-btn__icon {
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+    }
+    .ox-btn--ghost:hover {
+      background-color: var(--surface-white);
+      border-color: rgba(15, 15, 15, 0.25);
+    }
+
+    .ox-btn--ghost-dark {
+      background-color: transparent;
+      color: var(--text-light);
+      border-color: var(--border-dark-strong);
+    }
+    .ox-btn--ghost-dark .ox-btn__icon {
+      background-color: var(--surface-white);
+      color: var(--text-dark);
+    }
+    .ox-btn--ghost-dark:hover {
+      background-color: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.42);
+    }
+
+    /* ==========================================================================
+       3. FLOATING PILL NAVBAR
+       ========================================================================== */
+    .ox-nav-wrap {
+      position: fixed;
+      top: 14px;
+      left: 0;
+      right: 0;
+      z-index: 60;
+      padding: 0 24px;
+      pointer-events: none;
+      animation: navAppear 0.75s var(--ease-ox) 0.1s both;
+    }
+
+    @keyframes navAppear {
+      from { opacity: 0; transform: translateY(-28px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .ox-nav {
+      pointer-events: auto;
+      max-width: 1280px;
+      margin: 0 auto;
+      background-color: var(--surface-white);
+      border-radius: 999px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 10px 30px -12px rgba(0, 0, 0, 0.22);
+      padding: 6px 6px 6px 8px;
+      min-height: 66px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .ox-nav__link {
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--text-dark);
+      text-decoration: none;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    .ox-nav__link:hover {
+      background-color: rgba(15, 15, 15, 0.06);
+    }
+
+    .ox-nav__link.is-active {
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+    }
+
+    .ox-hamburger {
+      width: 48px;
+      height: 48px;
+      border-radius: 999px;
+      background: var(--bg-light);
+      border: 1px solid var(--border-light);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      padding: 0;
+    }
+
+    .ox-hamburger span {
+      position: absolute;
+      width: 18px;
+      height: 2px;
+      background-color: var(--text-dark);
+      border-radius: 2px;
+      transition: transform 0.32s var(--ease-ox), top 0.32s var(--ease-ox);
+    }
+
+    .ox-hamburger span:first-child { top: 19px; }
+    .ox-hamburger span:last-child { top: 25px; }
+
+    .ox-hamburger.is-open span:first-child {
+      top: 22px;
+      transform: rotate(45deg);
+    }
+    .ox-hamburger.is-open span:last-child {
+      top: 22px;
+      transform: rotate(-45deg);
+    }
+
+    .ox-mobile-drawer {
+      pointer-events: auto;
+      max-width: 1280px;
+      margin: 8px auto 0;
+      background: var(--surface-white);
+      border-radius: 28px;
+      box-shadow: 0 20px 48px -12px rgba(0, 0, 0, 0.24);
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: max-height 0.42s var(--ease-ox), opacity 0.3s ease, transform 0.35s var(--ease-ox);
+    }
+
+    .ox-mobile-drawer.is-open {
+      max-height: 460px;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 820px) {
+      .ox-nav-wrap {
+        padding: 0 14px;
+        top: 12px;
+      }
+      .ox-nav-desktop-links,
+      .ox-nav-desktop-cta {
+        display: none !important;
+      }
+      .ox-hamburger {
+        display: inline-flex;
+      }
+    }
+
+    /* ==========================================================================
+       4. HERO ANIMATIONS & SINGLE FLOATING PORTRAIT
+       ========================================================================== */
+    .hero-clip {
+      overflow: hidden;
+      padding-bottom: 0.08em;
+    }
+
+    .hero-reveal {
+      display: inline-block;
+      transform: translateY(115%);
+      animation: heroSlideUp 0.95s var(--ease-ox) forwards;
+    }
+
+    .hero-reveal--1 { animation-delay: 0.08s; }
+    .hero-reveal--2 { animation-delay: 0.2s; }
+    .hero-reveal--3 { animation-delay: 0.3s; }
+
+    @keyframes heroSlideUp {
+      to { transform: translateY(0); }
+    }
+
+    .hero-foot-reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      animation: heroFootFade 0.85s var(--ease-ox) 0.45s forwards;
+    }
+
+    @keyframes heroFootFade {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-portrait-frame {
+      animation: portraitAppear 1s var(--ease-ox) 0.25s both, portraitFloat 6.2s ease-in-out 1.25s infinite;
+      will-change: transform;
+    }
+
+    @keyframes portraitAppear {
+      from { opacity: 0; transform: scale(0.88) rotate(-4deg); }
+      to { opacity: 1; transform: scale(1) rotate(0deg); }
+    }
+
+    @keyframes portraitFloat {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-13px) rotate(1.4deg); }
+    }
+
+    .hero-portrait-img {
+      transition: transform 0.65s var(--ease-ox);
+    }
+
+    .hero-portrait-frame:hover .hero-portrait-img {
+      transform: scale(1.03);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-portrait-frame {
+        animation: none;
+      }
+    }
+
+    /* ==========================================================================
+       5. INFINITE CLIENT LOGO MARQUEE
+       ========================================================================== */
+    .ox-marquee {
+      overflow: hidden;
+      position: relative;
+      border-top: 1px solid var(--border-light);
+      border-bottom: 1px solid var(--border-light);
+      background-color: var(--bg-light);
+      padding: 26px 0;
+      user-select: none;
+    }
+
+    .ox-marquee__track {
+      display: flex;
+      width: max-content;
+      animation: marqueeScroll 34s linear infinite;
+      will-change: transform;
+    }
+
+    .ox-marquee:hover .ox-marquee__track {
+      animation-play-state: paused;
+    }
+
+    @keyframes marqueeScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .ox-marquee__group {
+      display: flex;
+      align-items: center;
+      gap: 44px;
+      padding-right: 44px;
+    }
+
+    .client-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      padding: 10px 22px 10px 14px;
+      border-radius: 999px;
+      background-color: var(--surface-white);
+      border: 1px solid rgba(15, 15, 15, 0.08);
+      transition: transform 0.35s var(--ease-ox), border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .client-pill:hover {
+      transform: translateY(-2px);
+      border-color: rgba(15, 15, 15, 0.22);
+      box-shadow: 0 10px 24px -14px rgba(0, 0, 0, 0.25);
+    }
+
+    .client-pill__logo-box {
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      background-color: #f6f6f6;
+      border: 1px solid rgba(15, 15, 15, 0.07);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .client-pill__logo-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: grayscale(100%) contrast(1.1);
+      transition: filter 0.35s ease;
+    }
+
+    .client-pill:hover .client-pill__logo-box img {
+      filter: grayscale(0%) contrast(1);
+    }
+
+    /* ==========================================================================
+       6. OX HOVER-PREVIEW PROJECT ROWS (SECTION 3)
+       ========================================================================== */
+    .ox-project-row {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 28px 18px;
+      border-bottom: 1px solid var(--border-light);
+      background-color: var(--bg-light);
+      cursor: pointer;
+      transition: background-color 0.38s var(--ease-ox), padding-left 0.42s var(--ease-ox), border-color 0.3s ease, border-radius 0.35s ease;
+    }
+
+    .ox-project-row:hover {
+      background-color: var(--bg-dark);
+      padding-left: 36px;
+      border-color: rgba(255, 255, 255, 0.14);
+      border-radius: 16px;
+      z-index: 15;
+    }
+
+    .ox-project-row__num,
+    .ox-project-row__meta,
+    .ox-project-row__date,
+    .ox-project-row__title {
+      transition: color 0.32s ease;
+    }
+
+    .ox-project-row__title {
+      color: var(--text-dark);
+    }
+
+    .ox-project-row:hover .ox-project-row__title,
+    .ox-project-row:hover .ox-project-row__date {
+      color: var(--text-light);
+    }
+
+    .ox-project-row:hover .ox-project-row__num,
+    .ox-project-row:hover .ox-project-row__meta {
+      color: var(--text-body-dark);
+    }
+
+    .ox-project-row__go {
+      width: 50px;
+      height: 50px;
+      border-radius: 999px;
+      border: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--text-dark);
+      transition: background-color 0.32s var(--ease-ox), border-color 0.32s ease, color 0.32s ease;
+    }
+
+    .ox-project-row__go svg {
+      transition: transform 0.38s var(--ease-ox);
+    }
+
+    .ox-project-row:hover .ox-project-row__go {
+      background-color: var(--surface-white);
+      border-color: var(--surface-white);
+      color: var(--text-dark);
+    }
+
+    .ox-project-row:hover .ox-project-row__go svg {
+      transform: rotate(45deg);
+    }
+
+    .ox-project-row__preview {
+      position: absolute;
+      right: 260px;
+      top: 50%;
+      width: 270px;
+      height: 185px;
+      border-radius: 14px;
+      overflow: hidden;
+      background-color: #161616;
+      box-shadow: 0 30px 60px -18px rgba(0, 0, 0, 0.55);
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(-50%) scale(0.68) rotate(-8deg);
+      transition: opacity 0.36s var(--ease-ox), transform 0.45s var(--ease-ox);
+      z-index: 25;
+      border: 2px solid rgba(255, 255, 255, 0.14);
+    }
+
+    .ox-project-row:hover .ox-project-row__preview {
+      opacity: 1;
+      transform: translateY(-50%) scale(1) rotate(-3deg);
+    }
+
+    @media (max-width: 1024px) {
+      .ox-project-row__preview {
+        display: none;
+      }
+      .ox-project-row:hover {
+        padding-left: 20px;
+      }
+    }
+
+    /* ==========================================================================
+       7. TOGGLE PILLS & SLIDING INDICATORS
+       ========================================================================== */
+    .ox-toggle-group {
+      position: relative;
+      display: inline-grid;
+      grid-auto-flow: column;
+      grid-auto-columns: 1fr;
+      background-color: var(--surface-white);
+      border: 1px solid var(--border-light);
+      border-radius: 999px;
+      padding: 5px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+
+    .ox-toggle-slider {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      bottom: 5px;
+      width: calc(50% - 5px);
+      background-color: var(--bg-dark);
+      border-radius: 999px;
+      transition: transform 0.38s var(--ease-ox);
+      z-index: 0;
+    }
+
+    .ox-toggle-btn {
+      position: relative;
+      z-index: 1;
+      padding: 10px 22px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: color 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .ox-toggle-btn.is-active {
+      color: var(--text-light);
+    }
+
+    /* ==========================================================================
+       8. SERVICES ACCORDION (DARK SECTION)
+       ========================================================================== */
+    .ox-accordion-item {
+      border-top: 1px solid var(--border-dark);
+    }
+
+    .ox-accordion-header {
+      width: 100%;
+      background: transparent;
+      border: none;
+      padding: 28px 0;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .ox-accordion-title {
+      color: var(--text-muted-dark);
+      transition: color 0.3s ease;
+    }
+
+    .ox-accordion-item.is-open .ox-accordion-title,
+    .ox-accordion-header:hover .ox-accordion-title {
+      color: var(--text-light);
+    }
+
+    .ox-accordion-toggle {
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      border: 1px solid var(--border-dark-strong);
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background-color 0.32s var(--ease-ox), border-color 0.32s ease, color 0.32s ease;
+    }
+
+    .ox-accordion-toggle svg {
+      width: 18px;
+      height: 18px;
+      transition: transform 0.4s var(--ease-ox);
+    }
+
+    .ox-accordion-item.is-open .ox-accordion-toggle {
+      background-color: var(--surface-white);
+      border-color: var(--surface-white);
+      color: var(--text-dark);
+    }
+
+    .ox-accordion-item.is-open .ox-accordion-toggle svg {
+      transform: rotate(45deg);
+    }
+
+    .ox-accordion-body-wrap {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.45s var(--ease-ox), opacity 0.35s ease;
+      opacity: 0;
+    }
+
+    .ox-accordion-item.is-open .ox-accordion-body-wrap {
+      grid-template-rows: 1fr;
+      opacity: 1;
+    }
+
+    .ox-accordion-body-inner {
+      overflow: hidden;
+    }
+
+    /* ==========================================================================
+       9. SCROLL REVEAL UTILITIES & MICRO-ANIMATIONS
+       ========================================================================== */
+    .reveal-blur {
+      opacity: 0;
+      filter: blur(8px);
+      transform: translateY(24px);
+      transition: opacity 0.9s var(--ease-ox), filter 0.9s var(--ease-ox), transform 0.9s var(--ease-ox);
+    }
+
+    .reveal-blur.is-visible {
+      opacity: 1;
+      filter: blur(0);
+      transform: translateY(0);
+    }
+
+    .reveal-up {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.75s var(--ease-ox), transform 0.75s var(--ease-ox);
+      transition-delay: var(--reveal-delay, 0ms);
+    }
+
+    .reveal-up.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .workflow-track-line {
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 1.1s var(--ease-ox) 0.15s;
+    }
+
+    .workflow-track-line.is-visible {
+      transform: scaleX(1);
+    }
+
+    @keyframes pricePop {
+      0% { opacity: 0.25; transform: translateY(6px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    .price-animate {
+      animation: pricePop 0.35s var(--ease-ox);
+    }
+
+    @keyframes fieldPulse {
+      0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.55); border-color: #ffffff; }
+      50% { box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.12); border-color: #ffffff; }
+      100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); border-color: rgba(255, 255, 255, 0.22); }
+    }
+    .package-pulse {
+      animation: fieldPulse 1.1s var(--ease-ox);
+    }
+
+    /* ==========================================================================
+       10. MODALS (BEHANCE EMBED, YOUTUBE POPUP PLAYER, BLOG READER)
+       ========================================================================== */
+    .ox-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background-color: rgba(15, 15, 15, 0.78);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .ox-modal.is-open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .ox-modal__dialog {
+      width: 100%;
+      background-color: var(--surface-white);
+      border-radius: 26px;
+      overflow: hidden;
+      box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.65);
+      transform: translateY(20px) scale(0.97);
+      transition: transform 0.38s var(--ease-ox);
+      display: flex;
+      flex-direction: column;
+      max-height: 92vh;
+    }
+
+    .ox-modal.is-open .ox-modal__dialog {
+      transform: translateY(0) scale(1);
+    }
+
+    .ox-modal__dialog--dark {
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      border: 1px solid var(--border-dark);
+    }
+
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+    .skeleton-shimmer {
+      background: linear-gradient(90deg, #1b1b1b 25%, #2a2a2a 50%, #1b1b1b 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.6s infinite;
+    }
+
+    /* Toast Notification */
+    .ox-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      border: 1px solid var(--border-dark-strong);
+      padding: 12px 22px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      z-index: 150;
+      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.45);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.38s var(--ease-ox), opacity 0.3s ease;
+    }
+
+    .ox-toast.is-visible {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* ==========================================================================
+       11. CLEAN PRINT-TO-PDF RESUME MODE
+       ========================================================================== */
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #0f0f0f !important;
+      }
+      header, nav, #hero, #client-marquee, #about, #work, #tech, #services, #reviews, #pricing, #resources, footer, .no-print, .ox-modal, .ox-toast {
+        display: none !important;
+      }
+      #resume {
+        display: block !important;
+        padding: 0 !important;
+        background: #ffffff !important;
+      }
+      #resume .reveal-up {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+      .print-only-header {
+        display: block !important;
+      }
+    }
+    .print-only-header {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================================================
+       FLOATING PILL NAVBAR (5 PRIMARY BUTTONS + MOBILE DRAWER)
+       ======================================================================== -->
+  <header class="ox-nav-wrap" role="banner">
+    <nav class="ox-nav" aria-label="Primary Navigation">
+      <!-- Left: Hex Design Logo Badge + Wordmark -->
+      <a href="#hero" class="flex items-center gap-3 pl-1 pr-2 no-underline group" data-scroll-link>
+        <span class="w-[46px] h-[46px] rounded-full bg-[#0F0F0F] flex items-center justify-center p-2 overflow-hidden flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
+          <img
+            src="https://drive.google.com/thumbnail?id=1mxcvq0fPqMSwV3e4r89CdcmlbWBsnsLj&sz=w1600"
+            data-gdrive-id="1mxcvq0fPqMSwV3e4r89CdcmlbWBsnsLj"
+            data-fallback-text="HEX"
+            alt="Hex Design Logo"
+            class="w-full h-full object-contain"
+          />
+        </span>
+        <span class="font-display text-[20px] leading-none tracking-[-0.02em] text-[#0F0F0F]">Hex Design</span>
+      </a>
+
+      <!-- Center: 5 Primary Smooth-Scroll Navigation Links -->
+      <div class="ox-nav-desktop-links flex items-center gap-1" role="menubar">
+        <a href="#about" class="ox-nav__link" data-nav-section="about" data-scroll-link>About</a>
+        <a href="#work" class="ox-nav__link" data-nav-section="work" data-scroll-link>Work</a>
+        <a href="#services" class="ox-nav__link" data-nav-section="services" data-scroll-link>Services</a>
+        <a href="#pricing" class="ox-nav__link" data-nav-section="pricing" data-scroll-link>Pricing</a>
+        <a href="#contact" class="ox-nav__link" data-nav-section="contact" data-scroll-link>Contact</a>
+      </div>
+
+      <!-- Right: Desktop Rolling-Label CTA + Mobile Hamburger -->
+      <div class="flex items-center gap-2">
+        <a href="#contact" class="ox-btn ox-btn--dark ox-nav-desktop-cta" data-scroll-link>
+          <span class="ox-btn__mask">
+            <span class="ox-btn__track">
+              <span class="ox-btn__text">Start a project</span>
+              <span class="ox-btn__text" aria-hidden="true">Start a project</span>
+            </span>
+          </span>
+          <span class="ox-btn__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M7 17L17 7M9 7h8v8" />
+            </svg>
+          </span>
+        </a>
+
+        <button
+          type="button"
+          id="mobileMenuBtn"
+          class="ox-hamburger"
+          aria-label="Toggle Menu"
+          aria-expanded="false"
+          aria-controls="mobileDrawer"
+        >
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Responsive Mobile Drawer -->
+    <div id="mobileDrawer" class="ox-mobile-drawer" aria-hidden="true">
+      <div class="p-5 flex flex-col gap-1">
+        <a href="#about" class="mobile-nav-link font-display uppercase text-[28px] leading-tight py-2.5 px-3 rounded-2xl text-[#0F0F0F] hover:bg-[#EDEDED] transition-colors no-underline" data-scroll-link>About</a>
+        <a href="#work" class="mobile-nav-link font-display uppercase text-[28px] leading-tight py-2.5 px-3 rounded-2xl text-[#0F0F0F] hover:bg-[#EDEDED] transition-colors no-underline" data-scroll-link>Work</a>
+        <a href="#services" class="mobile-nav-link font-display uppercase text-[28px] leading-tight py-2.5 px-3 rounded-2xl text-[#0F0F0F] hover:bg-[#EDEDED] transition-colors no-underline" data-scroll-link>Services</a>
+        <a href="#pricing" class="mobile-nav-link font-display uppercase text-[28px] leading-tight py-2.5 px-3 rounded-2xl text-[#0F0F0F] hover:bg-[#EDEDED] transition-colors no-underline" data-scroll-link>Pricing</a>
+        <a href="#contact" class="mobile-nav-link font-display uppercase text-[28px] leading-tight py-2.5 px-3 rounded-2xl text-[#0F0F0F] hover:bg-[#EDEDED] transition-colors no-underline" data-scroll-link>Contact</a>
+        <div class="pt-3 mt-2 border-t border-[rgba(15,15,15,0.1)]">
+          <a href="#contact" class="ox-btn ox-btn--dark w-full mobile-nav-link" data-scroll-link>
+            <span class="ox-btn__mask">
+              <span class="ox-btn__track">
+                <span class="ox-btn__text">Start a project</span>
+                <span class="ox-btn__text" aria-hidden="true">Start a project</span>
+              </span>
+            </span>
+            <span class="ox-btn__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 17L17 7M9 7h8v8" />
+              </svg>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ======================================================================
+         SECTION 1 — HERO (#hero)
+         ====================================================================== -->
+    <section id="hero" class="bg-[#EDEDED] pt-[116px] sm:pt-[128px] pb-[52px] sm:pb-[64px] px-4 sm:px-8 lg:px-10">
+      <div class="ox-container">
+        <!-- Top Hairline Meta Bar -->
+        <div class="flex items-center justify-between gap-4 pb-5 border-b border-[rgba(15,15,15,0.13)]">
+          <p class="ox-eyebrow">(HEX®) INDEPENDENT DESIGN STUDIO</p>
+          <p class="ox-eyebrow hidden md:inline-flex">GRAPHICS · TECH CONTENT · UI/UX · PHOTOGRAPHY</p>
+          <div class="ox-eyebrow hidden sm:inline-flex">
+            <span class="ox-live-dot" aria-hidden="true"></span>
+            <span>DHAKA, BANGLADESH</span>
+          </div>
+        </div>
+
+        <!-- Hero Centerpiece: Stacked Giant Typography + STRICTLY ONE Floating Personal Portrait -->
+        <div class="pt-9 sm:pt-12 flex flex-col lg:flex-row lg:items-center justify-between gap-10 lg:gap-8">
+          <div class="flex flex-col items-start select-none">
+            <div class="hero-clip">
+              <h1 class="ox-h1 hero-reveal hero-reveal--1">HEX</h1>
+            </div>
+            <div class="hero-clip pl-8 sm:pl-16 lg:pl-[86px] flex items-start gap-2 sm:gap-3">
+              <span class="ox-h1 hero-reveal hero-reveal--2">DESIGN</span>
+              <span class="ox-h4 text-[#0F0F0F] pt-1 sm:pt-3 hero-reveal hero-reveal--3" aria-hidden="true">®</span>
+            </div>
+          </div>
+
+          <!-- Single Floating Personal Portrait (Right on Desktop, Centered on Mobile, Unobstructed Artwork) -->
+          <div class="flex justify-center lg:justify-end flex-1">
+            <div id="heroPortraitParallax" class="w-full max-w-[320px] sm:max-w-[360px] lg:max-w-[390px] will-change-transform">
+              <div class="hero-portrait-frame relative w-full aspect-[4/5] rounded-3xl overflow-hidden bg-[#141414] shadow-[0_32px_68px_-24px_rgba(0,0,0,0.34)] border border-[rgba(15,15,15,0.12)]">
+                <img
+                  src="https://drive.google.com/thumbnail?id=19JLvhayu8iDSG1VXP2MvL0Ppv25YOhn_&sz=w1600"
+                  data-gdrive-id="19JLvhayu8iDSG1VXP2MvL0Ppv25YOhn_"
+                  data-fallback-text="HEX DESIGN"
+                  alt="Personal Portrait — Hex Design"
+                  class="hero-portrait-img w-full h-full object-cover object-center block"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Bottom Row: Tagline + Availability Pill + Dual CTA Buttons -->
+        <div class="hero-foot-reveal pt-10 sm:pt-14 flex flex-col lg:flex-row lg:items-end justify-between gap-7">
+          <p class="max-w-[440px] text-[18px] sm:text-[20px] font-medium leading-[1.45] tracking-[-0.01em] text-[#0F0F0F]">
+            In this era of AI slop, I design and build brands, Posters and interfaces that feel alive.
+          </p>
+
+          <!-- Floating White Availability Pill -->
+          <div class="inline-flex items-center gap-3 px-5 py-3 rounded-full bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05),0_10px_24px_-14px_rgba(0,0,0,0.25)] self-start lg:self-end">
+            <span class="ox-live-dot" aria-hidden="true"></span>
+            <div class="flex flex-col leading-tight">
+              <span class="text-[14px] font-semibold text-[#0F0F0F]">Booking projects</span>
+              <span class="text-[12px] font-medium text-[#6B6B6B]">Open for Q4 2026 / Q1 2027</span>
+            </div>
+          </div>
+
+          <!-- Dual Rolling-Label Buttons -->
+          <div class="flex flex-wrap items-center gap-3">
+            <a href="#contact" class="ox-btn ox-btn--dark" data-scroll-link>
+              <span class="ox-btn__mask">
+                <span class="ox-btn__track">
+                  <span class="ox-btn__text">Start a project</span>
+                  <span class="ox-btn__text" aria-hidden="true">Start a project</span>
+                </span>
+              </span>
+              <span class="ox-btn__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M7 17L17 7M9 7h8v8" />
+                </svg>
+              </span>
+            </a>
+
+            <a href="#work" class="ox-btn ox-btn--ghost" data-scroll-link>
+              <span class="ox-btn__mask">
+                <span class="ox-btn__track">
+                  <span class="ox-btn__text">See my work</span>
+                  <span class="ox-btn__text" aria-hidden="true">See my work</span>
+                </span>
+              </span>
+              <span class="ox-btn__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M7 17L17 7M9 7h8v8" />
+                </svg>
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         CLIENT & BRAND LOGO CAROUSEL SLIDER (BETWEEN SECTION 1 & 2)
+         ====================================================================== -->
+    <section id="client-marquee" class="ox-marquee" aria-label="Clients and Brands Worked With">
+      <div id="clientMarqueeTrack" class="ox-marquee__track">
+        <!-- Populated with seamless 2x client groups via JS -->
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 2 — ABOUT, WORKFLOW & 4 CATEGORIES (#about)
+         ====================================================================== -->
+    <section id="about" class="bg-[#EDEDED] py-[96px] sm:py-[136px] lg:py-[160px] px-4 sm:px-8 lg:px-10">
+      <div class="ox-container flex flex-col gap-[72px] sm:gap-[96px]">
+        <!-- Editorial Statement Row -->
+        <div class="flex flex-col lg:flex-row items-start gap-6 lg:gap-10">
+          <div class="lg:w-[280px] flex-shrink-0 lg:pt-3">
+            <div class="ox-eyebrow">
+              <span class="ox-dot"></span>
+              <span>ABOUT &amp; WORKFLOW</span>
+            </div>
+          </div>
+          <div class="flex-1">
+            <p class="ox-statement text-[#0F0F0F] reveal-blur">
+              Hex Design is an independent creative studio turning raw ideas into sharp identities, scroll-stopping visuals, and human-crafted digital experiences. Every project moves through a tight, distraction-free workflow: dissect the brief, build a bold visual direction, refine every pixel by hand, and ship assets built to stand out.
+            </p>
+          </div>
+        </div>
+
+        <!-- Compact Horizontal 4-Step Workflow Bar -->
+        <div class="relative">
+          <div class="hidden lg:block absolute top-[28px] left-0 right-0 h-[1px] bg-[rgba(15,15,15,0.16)] workflow-track-line" data-reveal-line></div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6 relative z-10">
+            <div class="flex flex-col items-start gap-3.5 reveal-up" style="--reveal-delay: 0ms;">
+              <div class="w-[56px] h-[56px] rounded-full bg-[#0F0F0F] text-white flex items-center justify-center text-[15px] font-semibold">01</div>
+              <span class="ox-eyebrow">PHASE 01</span>
+              <h3 class="ox-h5 text-[#0F0F0F]">Discovery &amp; Brief</h3>
+              <p class="text-[14px] text-[#6B6B6B] leading-relaxed">Unpacking brand goals, audience hooks, and visual gaps before opening a canvas.</p>
+            </div>
+            <div class="flex flex-col items-start gap-3.5 reveal-up" style="--reveal-delay: 80ms;">
+              <div class="w-[56px] h-[56px] rounded-full bg-[#0F0F0F] text-white flex items-center justify-center text-[15px] font-semibold">02</div>
+              <span class="ox-eyebrow">PHASE 02</span>
+              <h3 class="ox-h5 text-[#0F0F0F]">Concept &amp; Direction</h3>
+              <p class="text-[14px] text-[#6B6B6B] leading-relaxed">Moodboards, typography hierarchy, and bold layout angles built from scratch.</p>
+            </div>
+            <div class="flex flex-col items-start gap-3.5 reveal-up" style="--reveal-delay: 160ms;">
+              <div class="w-[56px] h-[56px] rounded-full bg-[#0F0F0F] text-white flex items-center justify-center text-[15px] font-semibold">03</div>
+              <span class="ox-eyebrow">PHASE 03</span>
+              <h3 class="ox-h5 text-[#0F0F0F]">Craft &amp; Iteration</h3>
+              <p class="text-[14px] text-[#6B6B6B] leading-relaxed">Precision execution across Photoshop, Illustrator, and Figma with zero generic templates.</p>
+            </div>
+            <div class="flex flex-col items-start gap-3.5 reveal-up" style="--reveal-delay: 240ms;">
+              <div class="w-[56px] h-[56px] rounded-full bg-[#0F0F0F] text-white flex items-center justify-center text-[15px] font-semibold">04</div>
+              <span class="ox-eyebrow">PHASE 04</span>
+              <h3 class="ox-h5 text-[#0F0F0F]">Launch-Ready Delivery</h3>
+              <p class="text-[14px] text-[#6B6B6B] leading-relaxed">Crisp, platform-optimized exports and source files ready to perform from day one.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4-Column Category Grid (3 White #FFFFFF + 1 Dark #0F0F0F Card) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+          <!-- Card 1: Graphics Design -->
+          <article class="bg-white rounded-[22px] p-7 min-h-[300px] flex flex-col justify-between transition-transform duration-300 hover:-translate-y-1 reveal-up" style="--reveal-delay: 0ms;">
+            <div class="flex items-center justify-between">
+              <span class="ox-eyebrow">01 · VISUALS</span>
+              <span class="ox-eyebrow">BRANDING</span>
+            </div>
+            <div class="font-display text-[56px] xl:text-[66px] leading-[0.9] tracking-[-0.04em] text-[#0F0F0F] my-6">3+ YRS</div>
+            <div class="flex flex-col gap-1.5">
+              <h3 class="text-[17px] font-bold tracking-[-0.01em] text-[#0F0F0F]">Graphics Design</h3>
+              <p class="text-[14px] text-[#6B6B6B] leading-[1.5]">Brand identities, social campaign posters, and high-CTR YouTube thumbnails engineered for instant recall.</p>
+            </div>
+          </article>
+
+          <!-- Card 2: Tech Content Creation -->
+          <article class="bg-white rounded-[22px] p-7 min-h-[300px] flex flex-col justify-between transition-transform duration-300 hover:-translate-y-1 reveal-up" style="--reveal-delay: 80ms;">
+            <div class="flex items-center justify-between">
+              <span class="ox-eyebrow">02 · MEDIA</span>
+              <span class="ox-eyebrow">YOUTUBE</span>
+            </div>
+            <div class="my-6">
+              <div class="font-display text-[56px] xl:text-[66px] leading-[0.9] tracking-[-0.04em] text-[#0F0F0F]">TECH</div>
+              <div class="w-full h-1 bg-[#EDEDED] rounded-full mt-4 overflow-hidden">
+                <div class="h-full w-[92%] bg-[#0F0F0F] rounded-full"></div>
+              </div>
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <h3 class="text-[17px] font-bold tracking-[-0.01em] text-[#0F0F0F]">Tech Content Creation</h3>
+              <p class="text-[14px] text-[#6B6B6B] leading-[1.5]">Hardware storytelling, hosting, scriptwriting, and visual production built for modern tech communities.</p>
+            </div>
+          </article>
+
+          <!-- Card 3: UI/UX Design -->
+          <article class="bg-white rounded-[22px] p-7 min-h-[300px] flex flex-col justify-between transition-transform duration-300 hover:-translate-y-1 reveal-up" style="--reveal-delay: 160ms;">
+            <div class="flex items-center justify-between">
+              <span class="ox-eyebrow">03 · DIGITAL</span>
+              <span class="ox-eyebrow">FIGMA</span>
+            </div>
+            <div class="font-display text-[56px] xl:text-[66px] leading-[0.9] tracking-[-0.04em] text-[#0F0F0F] my-6">UI/UX</div>
+            <div class="flex flex-col gap-1.5">
+              <h3 class="text-[17px] font-bold tracking-[-0.01em] text-[#0F0F0F]">UI/UX Design</h3>
+              <p class="text-[14px] text-[#6B6B6B] leading-[1.5]">Clean, intuitive app redesigns, web interfaces, and interactive prototypes designed for effortless flow.</p>
+            </div>
+          </article>
+
+          <!-- Card 4: Photography (Dark #0F0F0F Card with Dhaka Coordinates) -->
+          <article class="relative overflow-hidden bg-[#0F0F0F] text-white rounded-[22px] p-7 min-h-[300px] flex flex-col justify-between transition-transform duration-300 hover:-translate-y-1 reveal-up" style="--reveal-delay: 240ms;">
+            <svg class="absolute -bottom-20 -right-16 w-[250px] h-[250px] opacity-[0.14] pointer-events-none" viewBox="0 0 240 240" fill="none" aria-hidden="true">
+              <circle cx="120" cy="120" r="110" stroke="#FFFFFF" stroke-width="1" />
+              <circle cx="120" cy="120" r="82" stroke="#FFFFFF" stroke-width="1" stroke-dasharray="4 6" />
+              <circle cx="120" cy="120" r="54" stroke="#FFFFFF" stroke-width="1" />
+              <circle cx="120" cy="120" r="26" stroke="#FFFFFF" stroke-width="1" />
+              <line x1="120" y1="0" x2="120" y2="240" stroke="#FFFFFF" stroke-width="0.75" />
+              <line x1="0" y1="120" x2="240" y2="120" stroke="#FFFFFF" stroke-width="0.75" />
+            </svg>
+
+            <div class="flex items-center justify-between relative z-10">
+              <span class="ox-eyebrow ox-eyebrow--dark">04 · LENS</span>
+              <span class="ox-live-dot" aria-hidden="true"></span>
+            </div>
+            <div class="my-6 relative z-10">
+              <div class="font-display text-[36px] xl:text-[42px] leading-[1.02] tracking-[-0.02em] text-white">23.8° N<br />90.4° E</div>
+              <p class="text-[11px] font-semibold tracking-[0.14em] uppercase text-[#8E8E8E] mt-2">DHAKA · BANGLADESH</p>
+            </div>
+            <div class="flex flex-col gap-1.5 relative z-10">
+              <h3 class="text-[17px] font-bold tracking-[-0.01em] text-white">Photography</h3>
+              <p class="text-[14px] text-[#8E8E8E] leading-[1.5]">Editorial street frames and portraits capturing raw light, geometry, and authentic human stories.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 3 — BEHANCE GRAPHICS DESIGN PROJECTS (#work)
+         ====================================================================== -->
+    <section id="work" class="bg-[#EDEDED] pt-6 pb-[110px] sm:pb-[150px] px-4 sm:px-8 lg:px-10">
+      <div class="ox-container">
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 pb-12 sm:pb-16">
+          <h2 class="ox-h2 text-[#0F0F0F] reveal-up">
+            SELECTED<br />WORK
+          </h2>
+
+          <div class="flex flex-col items-start gap-4 max-w-[400px] reveal-up" style="--reveal-delay: 100ms;">
+            <div class="ox-eyebrow">
+              <span class="ox-dot"></span>
+              <span>BEHANCE PORTFOLIO · 2024 – 2026</span>
+            </div>
+            <p class="text-[15px] sm:text-[16px] text-[#6B6B6B] leading-[1.6]">
+              Bold, human-crafted design work built for real brands. Hover a row to preview, or click any project to view the full Behance embed right here.
+            </p>
+
+            <!-- List View / Card Grid Switcher -->
+            <div class="ox-toggle-group" role="tablist" aria-label="Project view mode" id="workViewToggle">
+              <div class="ox-toggle-slider" id="workViewSlider"></div>
+              <button type="button" class="ox-toggle-btn is-active" data-work-view="list" role="tab" aria-selected="true">List View</button>
+              <button type="button" class="ox-toggle-btn" data-work-view="grid" role="tab" aria-selected="false">Card Grid</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="behanceListContainer" class="border-t border-[rgba(15,15,15,0.13)]"></div>
+        <div id="behanceGridContainer" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+
+        <div class="pt-10 flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+          <p class="text-[15px] font-medium text-[#6B6B6B]">More case studies and visual experiments on Behance.</p>
+          <a href="https://www.behance.net/shaonshah" target="_blank" rel="noopener noreferrer" class="ox-btn ox-btn--dark self-start sm:self-auto">
+            <span class="ox-btn__mask">
+              <span class="ox-btn__track">
+                <span class="ox-btn__text">View Behance Profile</span>
+                <span class="ox-btn__text" aria-hidden="true">View Behance Profile</span>
+              </span>
+            </span>
+            <span class="ox-btn__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 17L17 7M9 7h8v8" />
+              </svg>
+            </span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 4 — TECH CONTENT (#tech — FULL + SHORTS TOGGLE + POPUP PLAYER)
+         ====================================================================== -->
+    <section id="tech" class="bg-[#EDEDED] pt-4 pb-[110px] sm:pb-[150px] px-4 sm:px-8 lg:px-10">
+      <div class="ox-container">
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 pb-12">
+          <h2 class="ox-h2 text-[#0F0F0F] reveal-up">
+            TECH<br />CONTENT
+          </h2>
+
+          <div class="flex flex-col items-start gap-4 max-w-[400px] reveal-up" style="--reveal-delay: 100ms;">
+            <div class="ox-eyebrow">
+              <span class="ox-dot"></span>
+              <span>YOUTUBE · HOSTING &amp; PRODUCTION</span>
+            </div>
+            <p class="text-[15px] sm:text-[16px] text-[#6B6B6B] leading-[1.6]">
+              Deep-dive tech storytelling, hardware breakdowns, and punchy vertical takes — watch every video right inside this site.
+            </p>
+
+            <!-- Toggle Button: Full Contents | YouTube Shorts -->
+            <div class="ox-toggle-group" role="tablist" aria-label="Tech content format" id="techToggle">
+              <div class="ox-toggle-slider" id="techToggleSlider"></div>
+              <button type="button" class="ox-toggle-btn is-active" data-tech-tab="full" role="tab" aria-selected="true">Full Contents</button>
+              <button type="button" class="ox-toggle-btn" data-tech-tab="shorts" role="tab" aria-selected="false">YouTube Shorts</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="techFullGrid" class="grid grid-cols-1 md:grid-cols-3 gap-5"></div>
+        <div id="techShortsGrid" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"></div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 5 — SERVICES (#services — ROUNDED DARK #0F0F0F SECTION)
+         ====================================================================== -->
+    <section id="services" class="bg-[#0F0F0F] text-white rounded-[24px] sm:rounded-[36px] py-[96px] sm:py-[140px] lg:py-[165px] px-4 sm:px-8 lg:px-10">
+      <div class="ox-container flex flex-col lg:flex-row items-start gap-12 lg:gap-20">
+        <!-- Sticky Left Header -->
+        <div class="w-full lg:w-[420px] flex-shrink-0 lg:sticky lg:top-[124px] flex flex-col items-start gap-6">
+          <div class="ox-eyebrow ox-eyebrow--dark">
+            <span class="ox-dot ox-dot--dark"></span>
+            <span>SERVICES</span>
+          </div>
+          <h2 class="ox-h2 text-white reveal-up">
+            WHAT I<br />OFFER
+          </h2>
+          <p class="text-[15px] sm:text-[16px] text-[#8E8E8E] leading-[1.6] max-w-[360px]">
+            Four focused creative disciplines crafted directly by hand — no middlemen, no watered-down templates, and zero guesswork from concept to final export.
+          </p>
+          <a href="#pricing" class="ox-btn ox-btn--light mt-1" data-scroll-link>
+            <span class="ox-btn__mask">
+              <span class="ox-btn__track">
+                <span class="ox-btn__text">See pricing</span>
+                <span class="ox-btn__text" aria-hidden="true">See pricing</span>
+              </span>
+            </span>
+            <span class="ox-btn__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 17L17 7M9 7h8v8" />
+              </svg>
+            </span>
+          </a>
+        </div>
+
+        <!-- Right Interactive Accordion List -->
+        <div id="servicesAccordion" class="w-full flex-1 border-b border-[rgba(255,255,255,0.14)]"></div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 6 — CLIENT RATINGS & FEEDBACK (#reviews)
+         ====================================================================== -->
+    <section id="reviews" class="bg-[#EDEDED] pt-[104px] sm:pt-[144px] pb-[96px] sm:pb-[130px] px-4 sm:px-8 lg:px-10">
+      <div class="ox-container flex flex-col lg:flex-row items-start gap-12 lg:gap-20">
+        <div class="w-full lg:w-[400px] flex-shrink-0 flex flex-col items-start gap-5">
+          <div class="ox-eyebrow">
+            <span class="ox-dot"></span>
+            <span>TESTIMONIALS · 5.0 / 5</span>
+          </div>
+          <h2 class="ox-h2 text-[#0F0F0F] reveal-up">
+            VOICES<br />FROM<br />CLIENTS
+          </h2>
+        </div>
+
+        <div class="w-full flex-1 flex flex-col gap-10" id="reviewSliderRegion" tabindex="0" aria-label="Client Testimonials">
+          <div class="min-h-[140px] sm:min-h-[180px] flex items-start">
+            <blockquote id="reviewQuote" class="ox-statement text-[#0F0F0F] transition-opacity duration-300">
+              “You are the best designer i've ever seen in my life”
+            </blockquote>
+          </div>
+
+          <div class="pt-6 border-t border-[rgba(15,15,15,0.13)] flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+              <div id="reviewAvatar" class="w-[52px] h-[52px] rounded-full bg-[#0F0F0F] text-white font-display text-[20px] flex items-center justify-center flex-shrink-0">
+                H
+              </div>
+              <div>
+                <p id="reviewName" class="text-[17px] font-bold text-[#0F0F0F] leading-snug">Himel Sheikh</p>
+                <p id="reviewRole" class="text-[14px] font-medium text-[#6B6B6B]">Dr. Sheikh</p>
+              </div>
+            </div>
+
+            <div id="reviewStars" class="flex items-center gap-1 text-[#0F0F0F]" aria-label="5 out of 5 stars"></div>
+          </div>
+
+          <div class="flex items-center gap-3 sm:gap-4">
+            <button
+              type="button"
+              id="prevReviewBtn"
+              aria-label="Previous review"
+              class="w-[54px] h-[54px] rounded-full border border-[rgba(15,15,15,0.16)] bg-transparent text-[#0F0F0F] flex items-center justify-center cursor-pointer transition-all duration-300 hover:bg-[#0F0F0F] hover:text-white hover:border-[#0F0F0F]"
+            >
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+              </svg>
+            </button>
+
+            <button
+              type="button"
+              id="nextReviewBtn"
+              aria-label="Next review"
+              class="w-[54px] h-[54px] rounded-full border border-[rgba(15,15,15,0.16)] bg-transparent text-[#0F0F0F] flex items-center justify-center cursor-pointer transition-all duration-300 hover:bg-[#0F0F0F] hover:text-white hover:border-[#0F0F0F]"
+            >
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </button>
+
+            <span id="reviewCounter" class="text-[15px] font-semibold text-[#6B6B6B] tabular-nums ml-1 whitespace-nowrap">01 / 04</span>
+
+            <div class="flex-1 h-[2px] bg-[rgba(15,15,15,0.14)] rounded-full overflow-hidden ml-2">
+              <div id="reviewProgress" class="h-full bg-[#0F0F0F] transition-all duration-500 ease-out" style="width: 25%;"></div>
+            </div>
+          </div>
+
+          <div id="reviewPills" class="flex flex-wrap items-center gap-2 pt-1" aria-label="Jump to client review"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 7 — RESUME & WORK EXPERIENCES (#resume)
+         ====================================================================== -->
+    <section id="resume" class="bg-[#EDEDED] pt-6 pb-[110px] sm:pb-[150px] px-4 sm:px-8 lg:px-10">
+      <div class="ox-container">
+        <!-- Print-Only Resume Header -->
+        <div class="print-only-header pb-6 mb-6 border-b border-black">
+          <h1 class="font-display text-4xl uppercase">Hex Design — Resume</h1>
+          <p class="text-sm mt-1">Email: shaonshah36@gmail.com | WhatsApp: +8801793961532 | Behance: behance.net/shaonshah</p>
+        </div>
+
+        <!-- Section Header + Download CV Button -->
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 pb-12 sm:pb-16">
+          <h2 class="ox-h2 text-[#0F0F0F] reveal-up">
+            RESUME &amp;<br />EXPERIENCE
+          </h2>
+
+          <div class="flex flex-col items-start gap-4 max-w-[400px] reveal-up" style="--reveal-delay: 100ms;">
+            <div class="ox-eyebrow">
+              <span class="ox-dot"></span>
+              <span>CURRICULUM VITAE · 2017 – PRESENT</span>
+            </div>
+            <p class="text-[15px] sm:text-[16px] text-[#6B6B6B] leading-[1.6]">
+              Hands-on leadership across graphic design, visual storytelling, tech media production, and software-backed UI/UX craft.
+            </p>
+            <button type="button" id="downloadCvBtn" class="ox-btn ox-btn--dark no-print">
+              <span class="ox-btn__mask">
+                <span class="ox-btn__track">
+                  <span class="ox-btn__text">Download CV</span>
+                  <span class="ox-btn__text" aria-hidden="true">Download CV</span>
+                </span>
+              </span>
+              <span class="ox-btn__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 5v12M7 12l5 5 5-5M5 20h14" />
+                </svg>
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Resume Grid: Experience Timeline (Left) + Education & Skills (Right) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
+          <!-- Left 7 Cols: Work Experience Timeline -->
+          <div class="lg:col-span-7 bg-white rounded-[24px] p-7 sm:p-9 border border-[rgba(15,15,15,0.08)] reveal-up">
+            <div class="flex items-center justify-between pb-6 border-b border-[rgba(15,15,15,0.12)]">
+              <div class="ox-eyebrow">
+                <span class="ox-dot"></span>
+                <span>WORK EXPERIENCE</span>
+              </div>
+              <span class="text-[12px] font-semibold uppercase tracking-[0.12em] text-[#8E8E8E]">05 ROLES</span>
+            </div>
+
+            <div class="divide-y divide-[rgba(15,15,15,0.1)]">
+              <!-- Role 1 -->
+              <div class="py-6 flex flex-col sm:flex-row sm:items-start justify-between gap-2">
+                <div>
+                  <div class="flex items-center gap-2.5 flex-wrap">
+                    <h3 class="font-display text-[24px] uppercase text-[#0F0F0F] leading-tight">Divaniz Limited</h3>
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#EDEDED] text-[11px] font-semibold uppercase tracking-[0.08em] text-[#0F0F0F]">
+                      <span class="w-1.5 h-1.5 rounded-full bg-[#2CC66B]"></span>Current
+                    </span>
+                  </div>
+                  <p class="text-[15px] font-semibold text-[#3A3A3A] mt-1">Lead Graphics Designer</p>
+                </div>
+                <span class="text-[13px] font-semibold text-[#6B6B6B] sm:text-right whitespace-nowrap pt-1">Sept. 2026 – Present</span>
+              </div>
+
+              <!-- Role 2 -->
+              <div class="py-6 flex flex-col sm:flex-row sm:items-start justify-between gap-2">
+                <div>
+                  <h3 class="font-display text-[24px] uppercase text-[#0F0F0F] leading-tight">PC Builder Bangladesh / PC Helpline Bangladesh</h3>
+                  <p class="text-[15px] font-semibold text-[#3A3A3A] mt-1">Project Manager, Video Host, Script Writer &amp; Team Lead</p>
+                </div>
+                <span class="text-[13px] font-semibold text-[#6B6B6B] sm:text-right whitespace-nowrap pt-1">Mar. 2025 – May 2026</span>
+              </div>
+
+              <!-- Role 3 -->
+              <div class="py-6 flex flex-col sm:flex-row sm:items-start justify-between gap-2">
+                <div>
+                  <h3 class="font-display text-[24px] uppercase text-[#0F0F0F] leading-tight">Medical Live Savers</h3>
+                  <p class="text-[15px] font-semibold text-[#3A3A3A] mt-1">Graphics Designer (Remote)</p>
+                </div>
+                <span class="text-[13px] font-semibold text-[#6B6B6B] sm:text-right whitespace-nowrap pt-1">Sept. 2025 – Jan. 2026</span>
+              </div>
+
+              <!-- Role 4 -->
+              <div class="py-6 flex flex-col sm:flex-row sm:items-start justify-between gap-2">
+                <div>
+                  <h3 class="font-display text-[24px] uppercase text-[#0F0F0F] leading-tight">Roots of Biology</h3>
+                  <p class="text-[15px] font-semibold text-[#3A3A3A] mt-1">Graphics Designer (Remote)</p>
+                </div>
+                <span class="text-[13px] font-semibold text-[#6B6B6B] sm:text-right whitespace-nowrap pt-1">Nov. 2024 – Dec. 2025</span>
+              </div>
+
+              <!-- Role 5 -->
+              <div class="pt-6 flex flex-col sm:flex-row sm:items-start justify-between gap-2">
+                <div>
+                  <h3 class="font-display text-[24px] uppercase text-[#0F0F0F] leading-tight">TechFinite</h3>
+                  <p class="text-[15px] font-semibold text-[#3A3A3A] mt-1">UI/UX &amp; Visual Designer (Remote)</p>
+                </div>
+                <span class="text-[13px] font-semibold text-[#6B6B6B] sm:text-right whitespace-nowrap pt-1">Oct. 2024 – Mar. 2025</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right 5 Cols: Education + Skills -->
+          <div class="lg:col-span-5 flex flex-col gap-6">
+            <!-- Education Card -->
+            <div class="bg-white rounded-[24px] p-7 sm:p-8 border border-[rgba(15,15,15,0.08)] reveal-up" style="--reveal-delay: 80ms;">
+              <div class="flex items-center justify-between pb-5 border-b border-[rgba(15,15,15,0.12)]">
+                <div class="ox-eyebrow">
+                  <span class="ox-dot"></span>
+                  <span>EDUCATION</span>
+                </div>
+                <span class="text-[12px] font-semibold uppercase tracking-[0.12em] text-[#8E8E8E]">ACADEMICS</span>
+              </div>
+
+              <div class="divide-y divide-[rgba(15,15,15,0.1)]">
+                <div class="py-5">
+                  <div class="flex items-center justify-between gap-2">
+                    <h3 class="font-display text-[20px] uppercase text-[#0F0F0F] leading-snug">Daffodil International University</h3>
+                    <span class="text-[12px] font-semibold text-[#6B6B6B] whitespace-nowrap">2023 – Present</span>
+                  </div>
+                  <p class="text-[14px] font-medium text-[#3A3A3A] mt-1">BSc in Computer Science (Major in Software Development)</p>
+                  <span class="inline-block mt-2 px-3 py-1 rounded-full bg-[#EDEDED] text-[12px] font-bold text-[#0F0F0F]">SGPA: 3.20</span>
+                </div>
+
+                <div class="py-5">
+                  <div class="flex items-center justify-between gap-2">
+                    <h3 class="font-display text-[20px] uppercase text-[#0F0F0F] leading-snug">Rangpur Government College</h3>
+                    <span class="text-[12px] font-semibold text-[#6B6B6B] whitespace-nowrap">2019 – 2021</span>
+                  </div>
+                  <p class="text-[14px] font-medium text-[#3A3A3A] mt-1">Higher Secondary School Certificate (HSC)</p>
+                  <span class="inline-block mt-2 px-3 py-1 rounded-full bg-[#EDEDED] text-[12px] font-bold text-[#0F0F0F]">GPA: 5.00 / 5.00</span>
+                </div>
+
+                <div class="pt-5">
+                  <div class="flex items-center justify-between gap-2">
+                    <h3 class="font-display text-[20px] uppercase text-[#0F0F0F] leading-snug">Cantonment Public School and College, Saidpur</h3>
+                    <span class="text-[12px] font-semibold text-[#6B6B6B] whitespace-nowrap">2017 – 2019</span>
+                  </div>
+                  <p class="text-[14px] font-medium text-[#3A3A3A] mt-1">Secondary School Certificate (SSC)</p>
+                  <span class="inline-block mt-2 px-3 py-1 rounded-full bg-[#EDEDED] text-[12px] font-bold text-[#0F0F0F]">GPA: 5.00 / 5.00</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Skills Dark Card -->
+            <div class="bg-[#0F0F0F] text-white rounded-[24px] p-7 sm:p-8 flex flex-col gap-5 reveal-up" style="--reveal-delay: 160ms;">
+              <div class="ox-eyebrow ox-eyebrow--dark pb-4 border-b border-[rgba(255,255,255,0.14)]">
+                <span class="ox-dot ox-dot--dark"></span>
+                <span>SKILLS &amp; TOOLKIT</span>
+              </div>
+
+              <div>
+                <p class="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#8E8E8E] mb-2">Core Design</p>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="px-3 py-1.5 rounded-full bg-white/10 text-[12px] font-medium text-white">Graphic Design</span>
+                  <span class="px-3 py-1.5 rounded-full bg-white/10 text-[12px] font-medium text-white">Social Media Branding</span>
+                  <span class="px-3 py-1.5 rounded-full bg-white/10 text-[12px] font-medium text-white">Visual Storytelling</span>
+                  <span class="px-3 py-1.5 rounded-full bg-white/10 text-[12px] font-medium text-white">Typography</span>
+                  <span class="px-3 py-1.5 rounded-full bg-white/10 text-[12px] font-medium text-white">Thumbnail Optimization</span>
+                  <span class="px-3 py-1.5 rounded-full bg-white/10 text-[12px] font-medium text-white">UI/UX</span>
+                </div>
+              </div>
+
+              <div>
+                <p class="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#8E8E8E] mb-2">Software Tools</p>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="px-3 py-1.5 rounded-full bg-white text-[#0F0F0F] text-[12px] font-semibold">Adobe Photoshop</span>
+                  <span class="px-3 py-1.5 rounded-full bg-white text-[#0F0F0F] text-[12px] font-semibold">Adobe Illustrator</span>
+                  <span class="px-3 py-1.5 rounded-full bg-white text-[#0F0F0F] text-[12px] font-semibold">Figma</span>
+                  <span class="px-3 py-1.5 rounded-full bg-white text-[#0F0F0F] text-[12px] font-semibold">Framer</span>
+                  <span class="px-3 py-1.5 rounded-full bg-white text-[#0F0F0F] text-[12px] font-semibold">Canva</span>
+                </div>
+              </div>
+
+              <div>
+                <p class="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#8E8E8E] mb-2">Strengths</p>
+                <p class="text-[13px] text-[#BDBDBD] leading-relaxed">
+                  Fast-paced Visual Production · Trend Analysis · Attention to Detail · Creative Problem Solving
+                </p>
+              </div>
+
+              <div class="pt-3 border-t border-[rgba(255,255,255,0.12)]">
+                <p class="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#8E8E8E] mb-1.5">Languages</p>
+                <p class="text-[13px] text-white font-medium">Bangla (Native) · English (Fluent) · Hindi (Fluent)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 8 — PRICING (#pricing — BDT / USD TOGGLE + CONTACT PRE-SELECT)
+         ====================================================================== -->
+    <section id="pricing" class="bg-[#EDEDED] pt-4 pb-[110px] sm:pb-[150px] px-4 sm:px-8 lg:px-10">
+      <div class="ox-container">
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 pb-12 sm:pb-16">
+          <h2 class="ox-h2 text-[#0F0F0F] reveal-up">
+            PROJECT<br />PRICING
+          </h2>
+
+          <div class="flex flex-col items-start gap-4 max-w-[380px] reveal-up" style="--reveal-delay: 100ms;">
+            <div class="ox-eyebrow">
+              <span class="ox-dot"></span>
+              <span>PRICING · FIXED SCOPE</span>
+            </div>
+            <p class="text-[15px] sm:text-[16px] text-[#6B6B6B] leading-[1.6]">
+              Transparent packages and clear deliverables. Toggle between BDT and USD, and click any plan to start right away.
+            </p>
+
+            <!-- BDT (৳) / USD ($) Currency Toggle Pill -->
+            <div class="ox-toggle-group" role="tablist" aria-label="Currency selector" id="currencyToggle">
+              <div class="ox-toggle-slider" id="currencySlider"></div>
+              <button type="button" class="ox-toggle-btn is-active" data-currency="BDT" role="tab" aria-selected="true">BDT (৳)</button>
+              <button type="button" class="ox-toggle-btn" data-currency="USD" role="tab" aria-selected="false">USD ($)</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3-Column Pricing Grid (Full Branding as Featured Dark Card) -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <!-- Tier 1: Poster / Thumbnail Design -->
+          <article class="bg-white rounded-[22px] p-7 sm:p-8 flex flex-col gap-7 reveal-up" style="--reveal-delay: 0ms;">
+            <div class="flex flex-col gap-1.5">
+              <div class="flex items-center justify-between min-h-[28px]">
+                <h3 class="text-[18px] font-bold tracking-[-0.01em] text-[#0F0F0F]">Poster / Thumbnail Design</h3>
+              </div>
+              <p class="text-[14px] text-[#6B6B6B]">High-impact visuals built to stop the scroll.</p>
+            </div>
+
+            <div class="flex items-end gap-2">
+              <span class="font-display text-[58px] sm:text-[68px] leading-[0.9] tracking-[-0.03em] text-[#0F0F0F] pricing-amount" data-bdt="৳1,000" data-usd="$10">৳1,000</span>
+              <span class="text-[14px] font-medium text-[#6B6B6B] pb-1.5">/ per poster</span>
+            </div>
+
+            <button
+              type="button"
+              class="ox-btn ox-btn--dark w-full select-package-btn"
+              data-package="Poster / Thumbnail Design (৳1,000 / $10)"
+            >
+              <span class="ox-btn__mask">
+                <span class="ox-btn__track">
+                  <span class="ox-btn__text">Select Poster Package</span>
+                  <span class="ox-btn__text" aria-hidden="true">Select Poster Package</span>
+                </span>
+              </span>
+              <span class="ox-btn__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M7 17L17 7M9 7h8v8" />
+                </svg>
+              </span>
+            </button>
+
+            <ul class="pt-6 border-t border-[rgba(15,15,15,0.12)] flex flex-col gap-3.5 list-none m-0 p-0">
+              <li class="flex items-center gap-3 text-[14px] font-medium text-[#0F0F0F]">
+                <span class="w-[22px] h-[22px] rounded-full bg-[rgba(15,15,15,0.07)] flex items-center justify-center flex-shrink-0"><svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+                Custom YouTube thumbnail or social media poster
+              </li>
+              <li class="flex items-center gap-3 text-[14px] font-medium text-[#0F0F0F]">
+                <span class="w-[22px] h-[22px] rounded-full bg-[rgba(15,15,15,0.07)] flex items-center justify-center flex-shrink-0"><svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+                High-CTR visual hierarchy &amp; bold typography
+              </li>
+              <li class="flex items-center gap-3 text-[14px] font-medium text-[#0F0F0F]">
+                <span class="w-[22px] h-[22px] rounded-full bg-[rgba(15,15,15,0.07)] flex items-center justify-center flex-shrink-0"><svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+                Platform-optimized high-res export (PNG / JPG)
+              </li>
+              <li class="flex items-center gap-3 text-[14px] font-medium text-[#0F0F0F]">
+                <span class="w-[22px] h-[22px] rounded-full bg-[rgba(15,15,15,0.07)] flex items-center justify-center flex-shrink-0"><svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+                Up to 2 rounds of fine-tuned revisions
+              </li>
+              <li class="flex items-center gap-3 text-[14px] font-medium text-[#0F0F0F]">
+                <span class="w-[22px] h-[22px] rounded-full bg-[rgba(15,15,15,0.07)] flex items-center justify-center flex-shrink-0"><svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+                Fast 24–48 hour turnaround
+              </li>
+            </ul>
+          </article>
+
+          <!-- Tier 2: Logo Design -->
+          <article class="bg-white rounded-[22px] p-7 sm:p-8 flex flex-col gap-7 reveal-up" style="--reveal-delay: 90ms;">
+            <div class="flex flex-col gap-1.5">
+              <div class="flex items-center justify-between gap-2 min-h-[28px]">
+                <h3 class="text-[18px] font-bold tracking-[-0.01em] text-[#0F0F0F]">Logo Design</h3>
+              </div>
+              <p class="text-[14px] text-[#6B6B6B]">A timeless, standalone mark engineered for clarity.</p>
+            </div>
+
+            <div class="flex items-end gap-2">
+              <span class="font-display text-[58px] sm:text-[68px] leading-[0.9] tracking-[-0.03em] text-[#0F0F0F] pricing-amount" data-bdt="৳5,000" data-usd="$50">৳5,000</span>
+              <span class="text-[14px] font-medium text-[#6B6B6B] pb-1.5">/ project</span>
+            </div>
+
+            <button
+              type="button"
+              class="ox-btn ox-btn--dark w-full select-package-btn"
+              data-package="Logo Design (৳5,000 / $50)"
+            >
+              <span class="ox-btn__mask">
+                <span class="ox-btn__track">
+                  <span class="ox-btn__text">Select Logo Package</span>
+                  <span class="ox-btn__text" aria-hidden="true">Select Logo Package</span>
+                </span>
+              </span>
+              <span class="ox-btn__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M7 17L17 7M9 7h8v8" />
+                </svg>
+              </span>
+            </button>
+
+            <ul class="pt-6 border-t border-[rgba(15,15,15,0.12)] flex flex-col gap-3.5 list-none m-0 p-0">
+              <li class="flex items-center gap-3 text-[14px] font-medium text-[#0F0F0F]">
+                <span class="w-[22px] h-[22px] rounded-full bg-[rgba(15,15,15,0.07)] flex items-center justify-center flex-shrink-0"><svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+                2–3 original logo concepts from scratch
+              </li>
+              <li class="flex items-center gap-3 text-[14px] font-medium text-[#0F0F0F]">
+                <span class="w-[22px] h-[22px] rounded-full bg-[rgba(15,15,15,0.07)] flex items-center justify-center flex-shrink-0"><svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+                Vector master files (AI, EPS, SVG)
+              </li>
+              <li class="flex items-center gap-3 text-[14px] font-medium text-[#0F0F0F]">
+                <span class="w-[22px] h-[22px] rounded-full bg-[rgba(15,15,15,0.07)] flex items-center justify-center flex-shrink-0"><svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+                High-res transparent PNGs (light &amp; dark variants)
+              </li>
+              <li class="flex items-center gap-3 text-[14px] font-medium text-[#0F0F0F]">
+                <span class="w-[22px] h-[22px] rounded-full bg-[rgba(15,15,15,0.07)] flex items-center justify-center flex-shrink-0"><svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+                Favicon &amp; social profile icon exports
+              </li>
+              <li class="flex items-center gap-3 text-[14px] font-medium text-[#0F0F0F]">
+                <span class="w-[22px] h-[22px] rounded-full bg-[rgba(15,15,15,0.07)] flex items-center justify-center flex-shrink-0"><svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+                Up to 3 revision rounds included
+              </li>
+            </ul>
+          </article>
+
+          <!-- Tier 3: Full Branding (Featured Dark #0F0F0F Card) -->
+          <article class="bg-[#0F0F0F] text-white rounded-[22px] p-7 sm:p-8 flex flex-col gap-7 shadow-[0_24px_60px_-20px_rgba(0,0,0,0.45)] reveal-up" style="--reveal-delay: 180ms;">
+            <div class="flex flex-col gap-1.5">
+              <div class="flex items-center justify-between gap-2 min-h-[28px]">
+                <h3 class="text-[18px] font-bold tracking-[-0.01em] text-white">Full Branding</h3>
+                <span class="px-3 py-1 rounded-full bg-white text-[#0F0F0F] text-[10px] font-bold tracking-[0.14em] uppercase">Best Value</span>
+              </div>
+              <p class="text-[14px] text-[#8E8E8E]">Complete visual identity system ready to launch.</p>
+            </div>
+
+            <div class="flex items-end gap-2">
+              <span class="font-display text-[58px] sm:text-[68px] leading-[0.9] tracking-[-0.03em] text-white pricing-amount" data-bdt="৳10,000" data-usd="$100">৳10,000</span>
+              <span class="text-[14px] font-medium text-[#8E8E8E] pb-1.5">/ project</span>
+            </div>
+
+            <button
+              type="button"
+              class="ox-btn ox-btn--light w-full select-package-btn"
+              data-package="Full Branding (৳10,000 / $100)"
+            >
+              <span class="ox-btn__mask">
+                <span class="ox-btn__track">
+                  <span class="ox-btn__text">Select Full Branding</span>
+                  <span class="ox-btn__text" aria-hidden="true">Select Full Branding</span>
+                </span>
+              </span>
+              <span class="ox-btn__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M7 17L17 7M9 7h8v8" />
+                </svg>
+              </span>
+            </button>
+
+            <ul class="pt-6 border-t border-[rgba(255,255,255,0.14)] flex flex-col gap-3.5 list-none m-0 p-0">
+              <li class="flex items-center gap-3 text-[14px] font-medium text-[#BDBDBD]">
+                <span class="w-[22px] h-[22px] rounded-full bg-[rgba(255,255,255,0.12)] text-white flex items-center justify-center flex-shrink-0"><svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+                Complete primary, secondary &amp; submark logo suite
+              </li>
+              <li class="flex items-center gap-3 text-[14px] font-medium text-[#BDBDBD]">
+                <span class="w-[22px] h-[22px] rounded-full bg-[rgba(255,255,255,0.12)] text-white flex items-center justify-center flex-shrink-0"><svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+                Curated brand color palette &amp; typography system
+              </li>
+              <li class="flex items-center gap-3 text-[14px] font-medium text-[#BDBDBD]">
+                <span class="w-[22px] h-[22px] rounded-full bg-[rgba(255,255,255,0.12)] text-white flex items-center justify-center flex-shrink-0"><svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+                Comprehensive Brand Guidelines PDF
+              </li>
+              <li class="flex items-center gap-3 text-[14px] font-medium text-[#BDBDBD]">
+                <span class="w-[22px] h-[22px] rounded-full bg-[rgba(255,255,255,0.12)] text-white flex items-center justify-center flex-shrink-0"><svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+                Social media branding kit (banners, avatars &amp; 3 templates)
+              </li>
+              <li class="flex items-center gap-3 text-[14px] font-medium text-[#BDBDBD]">
+                <span class="w-[22px] h-[22px] rounded-full bg-[rgba(255,255,255,0.12)] text-white flex items-center justify-center flex-shrink-0"><svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+                Print-ready stationery (business card &amp; letterhead) + source files
+              </li>
+            </ul>
+          </article>
+        </div>
+
+        <!-- Custom Scope Banner -->
+        <div class="mt-4 rounded-[22px] border border-[rgba(15,15,15,0.14)] px-6 sm:px-7 py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 reveal-up">
+          <div class="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+            <span class="text-[15px] font-bold text-[#0F0F0F]">Need something custom?</span>
+            <span class="text-[14px] text-[#6B6B6B]">Custom UI/UX builds, monthly retainers, or campaign bundles.</span>
+          </div>
+          <button
+            type="button"
+            class="ox-btn ox-btn--ghost self-start sm:self-auto select-package-btn"
+            data-package="Custom Project"
+          >
+            <span class="ox-btn__mask">
+              <span class="ox-btn__track">
+                <span class="ox-btn__text">Let’s scope it</span>
+                <span class="ox-btn__text" aria-hidden="true">Let’s scope it</span>
+              </span>
+            </span>
+            <span class="ox-btn__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 17L17 7M9 7h8v8" />
+              </svg>
+            </span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 9 — DESIGN TUTORIALS, SHORTS & BLOGS (#resources)
+         ====================================================================== -->
+    <section id="resources" class="bg-[#EDEDED] pt-2 pb-[110px] sm:pb-[150px] px-4 sm:px-8 lg:px-10">
+      <div class="ox-container">
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 pb-12">
+          <h2 class="ox-h2 text-[#0F0F0F] reveal-up">
+            TUTORIALS<br />&amp; BLOGS
+          </h2>
+
+          <div class="flex flex-col items-start gap-4 max-w-[420px] reveal-up" style="--reveal-delay: 100ms;">
+            <div class="ox-eyebrow">
+              <span class="ox-dot"></span>
+              <span>DESIGN RESOURCES · LEARN &amp; EXPLORE</span>
+            </div>
+            <p class="text-[15px] sm:text-[16px] text-[#6B6B6B] leading-[1.6]">
+              Breakdowns, quick design shorts, and written essays on typography, visual hierarchy, and human-centered craft.
+            </p>
+
+            <!-- Filter Tabs: All | Tutorials | Shorts | Blogs -->
+            <div class="flex flex-wrap items-center gap-2" role="tablist" aria-label="Filter design resources" id="resourceFilters">
+              <button type="button" class="resource-filter-btn px-4 py-2 rounded-full text-[13px] font-semibold bg-[#0F0F0F] text-white border border-[#0F0F0F] transition-colors cursor-pointer" data-filter="all">All</button>
+              <button type="button" class="resource-filter-btn px-4 py-2 rounded-full text-[13px] font-semibold bg-white text-[#6B6B6B] border border-[rgba(15,15,15,0.12)] hover:text-[#0F0F0F] transition-colors cursor-pointer" data-filter="tutorial">Tutorials</button>
+              <button type="button" class="resource-filter-btn px-4 py-2 rounded-full text-[13px] font-semibold bg-white text-[#6B6B6B] border border-[rgba(15,15,15,0.12)] hover:text-[#0F0F0F] transition-colors cursor-pointer" data-filter="short">Shorts</button>
+              <button type="button" class="resource-filter-btn px-4 py-2 rounded-full text-[13px] font-semibold bg-white text-[#6B6B6B] border border-[rgba(15,15,15,0.12)] hover:text-[#0F0F0F] transition-colors cursor-pointer" data-filter="blog">Blogs</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="resourcesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ========================================================================
+       SECTION 10 — FOOTER & CONTACT (#contact — ROUNDED-TOP DARK #0F0F0F)
+       ======================================================================== -->
+  <footer id="contact" class="bg-[#0F0F0F] text-white rounded-t-[24px] sm:rounded-t-[36px] pt-[96px] sm:pt-[136px] px-4 sm:px-8 lg:px-10 overflow-hidden">
+    <div class="ox-container">
+      <!-- Top CTA Block -->
+      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-10 pb-14">
+        <div class="flex flex-col items-start gap-6 max-w-[820px]">
+          <div class="ox-eyebrow ox-eyebrow--dark">
+            <span class="ox-live-dot" aria-hidden="true"></span>
+            <span>AVAILABLE FOR NEW PROJECTS</span>
+          </div>
+          <h2 class="ox-h2 text-white reveal-up">
+            LET’S CREATE SOMETHING THAT FEELS ALIVE
+          </h2>
+        </div>
+
+        <!-- Quick Copy Email Pill -->
+        <button
+          type="button"
+          id="copyEmailBtn"
+          class="inline-flex items-center gap-3 px-5 py-3.5 rounded-full bg-[#191919] border border-[rgba(255,255,255,0.16)] text-white hover:bg-[#242424] transition-colors cursor-pointer self-start lg:self-end"
+        >
+          <span class="text-[14px] font-semibold">shaonshah36@gmail.com</span>
+          <span id="copyEmailStatus" class="text-[11px] font-bold uppercase tracking-[0.12em] px-2.5 py-1 rounded-full bg-white text-[#0F0F0F]">Copy</span>
+        </button>
+      </div>
+
+      <!-- Direct Action Project Brief Composer (WhatsApp + Email) -->
+      <div class="bg-[#171717] border border-[rgba(255,255,255,0.12)] rounded-[24px] p-6 sm:p-9 mb-16 reveal-up">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-7 mb-7 border-b border-[rgba(255,255,255,0.1)]">
+          <div>
+            <h3 class="font-display text-[28px] sm:text-[32px] uppercase text-white leading-tight">Project Brief Composer</h3>
+            <p class="text-[14px] text-[#8E8E8E] mt-1">Fill out the details below and launch your brief directly into WhatsApp or Email.</p>
+          </div>
+          <span class="ox-eyebrow ox-eyebrow--dark">DIRECT RESPONSE · &lt; 24H</span>
+        </div>
+
+        <form id="contactForm" class="grid grid-cols-1 md:grid-cols-2 gap-5" novalidate>
+          <div class="flex flex-col gap-2">
+            <label for="clientName" class="text-[12px] font-semibold uppercase tracking-[0.12em] text-[#8E8E8E]">Your Name</label>
+            <input
+              id="clientName"
+              type="text"
+              placeholder="e.g. Alex Rahman"
+              class="w-full px-4 py-3.5 rounded-2xl bg-[#0F0F0F] border border-[rgba(255,255,255,0.16)] text-white placeholder-[#6B6B6B] text-[15px] focus:outline-none focus:border-white transition-colors"
+            />
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <label for="clientEmail" class="text-[12px] font-semibold uppercase tracking-[0.12em] text-[#8E8E8E]">Your Email</label>
+            <input
+              id="clientEmail"
+              type="email"
+              placeholder="you@brand.com"
+              class="w-full px-4 py-3.5 rounded-2xl bg-[#0F0F0F] border border-[rgba(255,255,255,0.16)] text-white placeholder-[#6B6B6B] text-[15px] focus:outline-none focus:border-white transition-colors"
+            />
+          </div>
+
+          <div class="md:col-span-2 flex flex-col gap-2">
+            <label for="selectedPackage" class="text-[12px] font-semibold uppercase tracking-[0.12em] text-[#8E8E8E]">Service / Package</label>
+            <select
+              id="selectedPackage"
+              class="w-full px-4 py-3.5 rounded-2xl bg-[#0F0F0F] border border-[rgba(255,255,255,0.16)] text-white text-[15px] focus:outline-none focus:border-white transition-all cursor-pointer"
+            >
+              <option value="Poster / Thumbnail Design (৳1,000 / $10)">Poster / Thumbnail Design (৳1,000 / $10)</option>
+              <option value="Logo Design (৳5,000 / $50)">Logo Design (৳5,000 / $50)</option>
+              <option value="Full Branding (৳10,000 / $100)" selected>Full Branding (৳10,000 / $100)</option>
+              <option value="UI/UX Design">UI/UX Design</option>
+              <option value="Custom Project">Custom Project</option>
+            </select>
+          </div>
+
+          <div class="md:col-span-2 flex flex-col gap-2">
+            <label for="projectDetails" class="text-[12px] font-semibold uppercase tracking-[0.12em] text-[#8E8E8E]">Project Details</label>
+            <textarea
+              id="projectDetails"
+              rows="4"
+              placeholder="Tell me about your brand, timeline, references, or goals..."
+              class="w-full px-4 py-3.5 rounded-2xl bg-[#0F0F0F] border border-[rgba(255,255,255,0.16)] text-white placeholder-[#6B6B6B] text-[15px] focus:outline-none focus:border-white transition-colors resize-y"
+            ></textarea>
+          </div>
+
+          <div class="md:col-span-2 flex flex-wrap items-center gap-3.5 pt-2">
+            <button type="button" id="sendWhatsappBtn" class="ox-btn ox-btn--light">
+              <span class="ox-btn__mask">
+                <span class="ox-btn__track">
+                  <span class="ox-btn__text">Send via WhatsApp</span>
+                  <span class="ox-btn__text" aria-hidden="true">Send via WhatsApp</span>
+                </span>
+              </span>
+              <span class="ox-btn__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M7 17L17 7M9 7h8v8" />
+                </svg>
+              </span>
+            </button>
+
+            <button type="button" id="sendEmailBtn" class="ox-btn ox-btn--ghost-dark">
+              <span class="ox-btn__mask">
+                <span class="ox-btn__track">
+                  <span class="ox-btn__text">Send via Email</span>
+                  <span class="ox-btn__text" aria-hidden="true">Send via Email</span>
+                </span>
+              </span>
+              <span class="ox-btn__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M7 17L17 7M9 7h8v8" />
+                </svg>
+              </span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- 4-Column OX Footer Grid -->
+      <div class="pt-12 pb-12 border-t border-[rgba(255,255,255,0.14)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+        <!-- Col 1: Studio -->
+        <div class="flex flex-col gap-4">
+          <div class="flex items-center gap-3">
+            <span class="w-10 h-10 rounded-full bg-white/10 border border-white/15 flex items-center justify-center p-1.5 overflow-hidden">
+              <img
+                src="https://drive.google.com/thumbnail?id=1mxcvq0fPqMSwV3e4r89CdcmlbWBsnsLj&sz=w1600"
+                data-gdrive-id="1mxcvq0fPqMSwV3e4r89CdcmlbWBsnsLj"
+                data-fallback-text="HEX"
+                alt="Hex Design Emblem"
+                class="w-full h-full object-contain"
+              />
+            </span>
+            <span class="font-display text-[22px] text-white">Hex Design</span>
+          </div>
+          <p class="text-[14px] text-[#8E8E8E] leading-relaxed">
+            Independent creative studio crafting bold brand identities, social posters, thumbnails, and UI/UX from Dhaka, Bangladesh — working worldwide.
+          </p>
+        </div>
+
+        <!-- Col 2: Navigation -->
+        <div class="flex flex-col gap-3">
+          <span class="ox-eyebrow ox-eyebrow--dark mb-1">NAVIGATION</span>
+          <a href="#about" class="text-[15px] font-semibold text-white hover:text-[#8E8E8E] transition-colors no-underline" data-scroll-link>About &amp; Workflow</a>
+          <a href="#work" class="text-[15px] font-semibold text-white hover:text-[#8E8E8E] transition-colors no-underline" data-scroll-link>Selected Work</a>
+          <a href="#tech" class="text-[15px] font-semibold text-white hover:text-[#8E8E8E] transition-colors no-underline" data-scroll-link>Tech Content</a>
+          <a href="#services" class="text-[15px] font-semibold text-white hover:text-[#8E8E8E] transition-colors no-underline" data-scroll-link>Services</a>
+          <a href="#resume" class="text-[15px] font-semibold text-white hover:text-[#8E8E8E] transition-colors no-underline" data-scroll-link>Resume</a>
+          <a href="#pricing" class="text-[15px] font-semibold text-white hover:text-[#8E8E8E] transition-colors no-underline" data-scroll-link>Pricing</a>
+          <a href="#resources" class="text-[15px] font-semibold text-white hover:text-[#8E8E8E] transition-colors no-underline" data-scroll-link>Tutorials &amp; Blogs</a>
+        </div>
+
+        <!-- Col 3: Direct Contact -->
+        <div class="flex flex-col gap-3">
+          <span class="ox-eyebrow ox-eyebrow--dark mb-1">DIRECT CONTACT</span>
+          <a href="mailto:shaonshah36@gmail.com" class="font-display text-[22px] text-white hover:text-[#BDBDBD] transition-colors no-underline break-all">shaonshah36@gmail.com</a>
+          <a href="https://wa.me/8801793961532" target="_blank" rel="noopener noreferrer" class="text-[15px] font-semibold text-[#BDBDBD] hover:text-white transition-colors no-underline">+880 1793-961532</a>
+          <p class="text-[14px] text-[#8E8E8E] mt-1">Dhaka, Bangladesh (GMT+6)</p>
+        </div>
+
+        <!-- Col 4: Socials -->
+        <div class="flex flex-col gap-3">
+          <span class="ox-eyebrow ox-eyebrow--dark mb-1">SOCIALS</span>
+          <a href="https://www.behance.net/shaonshah" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-between py-1 text-[15px] font-semibold text-white hover:text-[#8E8E8E] transition-colors no-underline border-b border-white/10">
+            <span>Behance</span>
+            <span aria-hidden="true">↗</span>
+          </a>
+          <a href="https://www.linkedin.com/in/shaon36/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-between py-1 text-[15px] font-semibold text-white hover:text-[#8E8E8E] transition-colors no-underline border-b border-white/10">
+            <span>LinkedIn</span>
+            <span aria-hidden="true">↗</span>
+          </a>
+          <a href="https://www.instagram.com/h3x_design6/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-between py-1 text-[15px] font-semibold text-white hover:text-[#8E8E8E] transition-colors no-underline border-b border-white/10">
+            <span>Instagram</span>
+            <span aria-hidden="true">↗</span>
+          </a>
+          <a href="https://www.facebook.com/people/H3X-Design/61589395095689/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-between py-1 text-[15px] font-semibold text-white hover:text-[#8E8E8E] transition-colors no-underline border-b border-white/10">
+            <span>Facebook</span>
+            <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="py-6 border-t border-[rgba(255,255,255,0.14)] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-[13px] font-medium text-[#8E8E8E]">
+        <p>© 2026 Hex Design · All rights reserved.</p>
+        <p>Crafted with intent — zero AI slop.</p>
+        <a href="#hero" class="text-white hover:text-[#BDBDBD] transition-colors no-underline" data-scroll-link>Back to top ↑</a>
+      </div>
+
+      <!-- Massive Edge-to-Edge OX Display Watermark -->
+      <div aria-hidden="true" class="pt-4 pb-2 select-none overflow-hidden">
+        <p class="font-display uppercase text-white text-center leading-[0.82] tracking-[-0.045em] text-[clamp(58px,15.8vw,224px)] whitespace-nowrap">
+          HEX DESIGN
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================================================
+       MODAL 1 — IN-SITE BEHANCE PROJECT EMBED MODAL
+       ======================================================================== -->
+  <div id="behanceModal" class="ox-modal" role="dialog" aria-modal="true" aria-labelledby="behanceModalTitle">
+    <div class="ox-modal__dialog ox-modal__dialog--dark max-w-[1060px] h-[88vh]">
+      <div class="flex items-center justify-between gap-4 px-5 sm:px-7 py-4 border-b border-[rgba(255,255,255,0.14)] flex-shrink-0">
+        <div class="min-w-0">
+          <p id="behanceModalMeta" class="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#8E8E8E] truncate">BRAND IDENTITY · LEAD DESIGNER</p>
+          <h3 id="behanceModalTitle" class="font-display text-[20px] sm:text-[26px] uppercase text-white truncate mt-0.5">Project Title</h3>
+        </div>
+        <div class="flex items-center gap-2.5 flex-shrink-0">
+          <a id="behanceExternalLink" href="#" target="_blank" rel="noopener noreferrer" class="px-4 py-2 rounded-full bg-white text-[#0F0F0F] text-[13px] font-semibold no-underline hover:bg-[#EDEDED] transition-colors whitespace-nowrap">
+            Open on Behance ↗
+          </a>
+          <button type="button" class="w-10 h-10 rounded-full border border-[rgba(255,255,255,0.2)] text-white flex items-center justify-center cursor-pointer hover:bg-white hover:text-[#0F0F0F] transition-colors" data-close-modal="behanceModal" aria-label="Close Behance project viewer">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="relative flex-1 bg-[#141414] overflow-hidden">
+        <div id="behanceLoader" class="absolute inset-0 flex flex-col items-center justify-center gap-4 p-8 skeleton-shimmer z-10">
+          <div class="w-12 h-12 rounded-full border-2 border-white/20 border-t-white animate-spin"></div>
+          <p class="text-[13px] font-semibold uppercase tracking-[0.14em] text-[#BDBDBD]">Loading Behance Case Study...</p>
+        </div>
+        <iframe
+          id="behanceIframe"
+          src=""
+          title="Behance Project Embed"
+          class="w-full h-full border-0 relative z-20"
+          allowfullscreen
+          loading="lazy"
+        ></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL 2 — UNIFIED IN-SITE YOUTUBE POPUP PLAYER (16:9 & 9:16)
+       ======================================================================== -->
+  <div id="videoModal" class="ox-modal" role="dialog" aria-modal="true" aria-labelledby="videoModalTitle">
+    <div id="videoModalDialog" class="ox-modal__dialog ox-modal__dialog--dark max-w-[960px]">
+      <div class="flex items-center justify-between gap-4 px-5 sm:px-6 py-4 border-b border-[rgba(255,255,255,0.14)]">
+        <div class="min-w-0">
+          <p id="videoModalMeta" class="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#8E8E8E] truncate">YOUTUBE · FULL CONTENT</p>
+          <h3 id="videoModalTitle" class="font-display text-[20px] sm:text-[24px] uppercase text-white truncate mt-0.5">Video Title</h3>
+        </div>
+        <button type="button" class="w-10 h-10 rounded-full border border-[rgba(255,255,255,0.2)] text-white flex items-center justify-center cursor-pointer hover:bg-white hover:text-[#0F0F0F] transition-colors flex-shrink-0" data-close-modal="videoModal" aria-label="Close video player">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div id="videoFrameWrap" class="relative w-full aspect-video bg-black flex items-center justify-center">
+        <iframe
+          id="youtubeIframe"
+          src=""
+          title="YouTube Popup Player"
+          class="w-full h-full border-0 hidden"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen
+        ></iframe>
+
+        <div id="videoPlaceholderState" class="hidden w-full h-full flex flex-col items-center justify-center text-center p-8 bg-[#121212]">
+          <div class="w-16 h-16 rounded-full bg-white text-[#0F0F0F] flex items-center justify-center mb-5 shadow-lg">
+            <svg class="w-7 h-7 ml-0.5" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+          <span class="ox-eyebrow ox-eyebrow--dark mb-2">IN-SITE POPUP PLAYER READY</span>
+          <h4 id="videoPlaceholderHeading" class="font-display text-[26px] sm:text-[32px] uppercase text-white max-w-[520px] leading-tight">Placeholder Video</h4>
+          <p class="text-[14px] text-[#8E8E8E] max-w-[440px] mt-3 leading-relaxed">
+            Ready for your YouTube link — paste your YouTube URL or video ID into <code class="text-white bg-white/10 px-1.5 py-0.5 rounded">PORTFOLIO_DATA</code> in <code class="text-white bg-white/10 px-1.5 py-0.5 rounded">index.html</code> to play live right here without leaving your portfolio.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL 3 — IN-SITE EDITORIAL BLOG READER MODAL
+       ======================================================================== -->
+  <div id="blogModal" class="ox-modal" role="dialog" aria-modal="true" aria-labelledby="blogModalTitle">
+    <div class="ox-modal__dialog max-w-[780px] bg-white text-[#0F0F0F]">
+      <div class="flex items-center justify-between gap-4 px-6 sm:px-8 py-5 border-b border-[rgba(15,15,15,0.12)] flex-shrink-0">
+        <div class="flex items-center gap-3">
+          <span id="blogModalCategory" class="px-3 py-1 rounded-full bg-[#0F0F0F] text-white text-[11px] font-semibold uppercase tracking-[0.12em]">DESIGN ESSAY</span>
+          <span id="blogModalReadTime" class="text-[12px] font-semibold uppercase tracking-[0.12em] text-[#6B6B6B]">4 MIN READ</span>
+        </div>
+        <button type="button" class="w-10 h-10 rounded-full border border-[rgba(15,15,15,0.16)] text-[#0F0F0F] flex items-center justify-center cursor-pointer hover:bg-[#0F0F0F] hover:text-white transition-colors" data-close-modal="blogModal" aria-label="Close article reader">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <article id="blogModalBody" class="p-6 sm:p-10 overflow-y-auto space-y-6"></article>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="oxToast" class="ox-toast" role="status" aria-live="polite"></div>
+
+  <!-- ========================================================================
+       APPLICATION LOGIC & EDITABLE PORTFOLIO DATA
+       ======================================================================== -->
+  <script>
+    /* ========================================================================
+       ===== EDITABLE PORTFOLIO DATA =====
+       Update your YouTube links, Blog posts, or CV Google Drive PDF URL here.
+       ======================================================================== */
+    const PORTFOLIO_DATA = {
+      // Paste your public Google Drive CV PDF link here later (e.g., "https://drive.google.com/file/d/YOUR_ID/view").
+      // While empty (""), clicking "Download CV" opens a clean print-to-PDF view of your on-page Resume.
+      cvUrl: "",
+
+      // Direct Contact Config
+      contact: {
+        email: "shaonshah36@gmail.com",
+        whatsappNumber: "8801793961532"
+      },
+
+      // Client & Brand Logo Marquee (6 Clients)
+      clients: [
+        { name: "PC Builders Bangladesh", driveId: "1Vv_knT2qCvHh6kCAawO3Y2GBRuZbqUuc" },
+        { name: "PC Helpline Bangladesh", driveId: "16fx0iPKnMwJlzLeRzpVvTtdnyDu1xfS1" },
+        { name: "Asus", driveId: "1EDIymKzCzoPDmrFbnymGN4k6w5Exfm7F" },
+        { name: "Dr. Sheikh", driveId: "126dn8N7-yUnBZhkPa9wTNvXi8785LzTk" },
+        { name: "PCB Store", driveId: "1iIbsZ6O3OhnirHDLY3ZatQfIlNMROaFt" },
+        { name: "Renata PLC", driveId: "1vj349vf_byuhY5f4ymwX1BBpYRgdybGO" }
+      ],
+
+      // Section 3: Behance Graphics Design Projects
+      behanceProjects: [
+        {
+          num: "01",
+          title: "Dr. Sheikh | Logo, Brand Identity & Social Media Design",
+          type: "Brand Identity",
+          role: "Lead Designer",
+          date: "Aug 13, 2026",
+          behanceId: "254235577",
+          url: "https://www.behance.net/gallery/254235577/Dr-Sheikh-Logo-Brand-Identity-Social-Media-Design",
+          coverDriveId: "1ds9BR0X9abs2NmvOu94cRjtaN-rbDIGm"
+        },
+        {
+          num: "02",
+          title: "Nothing Headphone (a) Social media poster",
+          type: "Social Media Poster",
+          role: "Lead Designer",
+          date: "Jul 23, 2026",
+          behanceId: "253188337",
+          url: "https://www.behance.net/gallery/253188337/Nothing-Headphone-%28a%29-Social-media-poster",
+          coverDriveId: "1Nd-3LbhImICvSRPPbwjeEVInnjkO_kf6"
+        },
+        {
+          num: "03",
+          title: "Blu Electrolyte Drinks Social Media Poster Design",
+          type: "Social Media Poster",
+          role: "Lead Designer",
+          date: "Jul 29, 2026",
+          behanceId: "253467857",
+          url: "https://www.behance.net/gallery/253467857/Blu-Electrolyte-Drinks-Social-Media-Poster-Design",
+          coverDriveId: "1hVW5HrbmGuPm8nu8sdHsdVE9AbmuZX9k"
+        },
+        {
+          num: "04",
+          title: "Youtube Thumbnails for PC Builder Bangladesh",
+          type: "Thumbnail Design",
+          role: "Lead Designer",
+          date: "Feb 23, 2026",
+          behanceId: "244595383",
+          url: "https://www.behance.net/gallery/244595383/Youtube-Thumbnails-for-PC-Builder-Bangladesh",
+          coverDriveId: "1syQGouXVWAuTAnKi4y5fDKMVdtQjHozl"
+        },
+        {
+          num: "05",
+          title: "My Teletalk App UI Redesign",
+          type: "UI/UX Design",
+          role: "Lead Designer",
+          date: "Dec 15, 2024",
+          behanceId: "214792593",
+          url: "https://www.behance.net/gallery/214792593/My-Teletalk-App-UI-Redesign",
+          coverDriveId: "1ncCOiHueaR-zBVjIN-trF3reo13nDdW1"
+        },
+        {
+          num: "06",
+          title: "Mint Art Logo Design",
+          type: "Logo Design",
+          role: "Lead Designer",
+          date: "Dec 25, 2024",
+          behanceId: "215439251",
+          url: "https://www.behance.net/gallery/215439251/Mint-Art-Logo-Design",
+          coverDriveId: "1jKs79N1X4bLmG4QlVcHLuCb6hg8P1Krl"
+        }
+      ],
+
+      // Section 4A: Tech Content — Full Videos (16:9)
+      // Paste any YouTube watch or share URL into `youtubeUrl` to load thumbnail + popup playback automatically.
+      techFullVideos: [
+        {
+          id: "tf-1",
+          title: "Tech Deep-Dive & Hardware Review (Placeholder)",
+          category: "Full Documentary / Review",
+          duration: "14:20",
+          youtubeUrl: "",
+          placeholderCode: "EP. 01"
+        },
+        {
+          id: "tf-2",
+          title: "Custom PC & Peripheral Breakdown (Placeholder)",
+          category: "Tech Showcase",
+          duration: "11:05",
+          youtubeUrl: "",
+          placeholderCode: "EP. 02"
+        },
+        {
+          id: "tf-3",
+          title: "Factory Tour & Tech Documentary (Placeholder)",
+          category: "Documentary",
+          duration: "18:40",
+          youtubeUrl: "",
+          placeholderCode: "EP. 03"
+        }
+      ],
+
+      // Section 4B: Tech Content — YouTube Shorts (9:16)
+      techShorts: [
+        {
+          id: "ts-1",
+          title: "60-Second Hardware Take (Short Placeholder)",
+          category: "YouTube Short",
+          duration: "0:58",
+          youtubeUrl: "",
+          placeholderCode: "SH. 01"
+        },
+        {
+          id: "ts-2",
+          title: "Keyboard Sound Test & Modding (Short Placeholder)",
+          category: "YouTube Short",
+          duration: "0:45",
+          youtubeUrl: "",
+          placeholderCode: "SH. 02"
+        },
+        {
+          id: "ts-3",
+          title: "Desk Setup & Gear Breakdown (Short Placeholder)",
+          category: "YouTube Short",
+          duration: "0:52",
+          youtubeUrl: "",
+          placeholderCode: "SH. 03"
+        },
+        {
+          id: "ts-4",
+          title: "Tech Myth Busting (Short Placeholder)",
+          category: "YouTube Short",
+          duration: "0:49",
+          youtubeUrl: "",
+          placeholderCode: "SH. 04"
+        }
+      ],
+
+      // Section 5: Services Accordion
+      services: [
+        {
+          num: "(01)",
+          title: "Logo / Branding Design",
+          description: "Distinctive, scalable brand marks and cohesive identity systems crafted to make your business unmistakable across digital and print.",
+          tags: "LOGO SYSTEMS · BRAND GUIDELINES · VISUAL IDENTITY",
+          coverDriveId: "1ds9BR0X9abs2NmvOu94cRjtaN-rbDIGm"
+        },
+        {
+          num: "(02)",
+          title: "Social Media Poster Design",
+          description: "Scroll-stopping campaign visuals, product launches, and ad creatives engineered with bold typography and sharp composition.",
+          tags: "CAMPAIGN POSTERS · PRODUCT ADS · SOCIAL CAROUSELS",
+          coverDriveId: "1Nd-3LbhImICvSRPPbwjeEVInnjkO_kf6"
+        },
+        {
+          num: "(03)",
+          title: "YouTube Thumbnail Design",
+          description: "High-CTR thumbnails built around visual hierarchy, facial expression storytelling, and instant mobile readability.",
+          tags: "CTR OPTIMIZATION · TECH & CREATOR THUMBNAILS · A/B CONCEPTS",
+          coverDriveId: "1syQGouXVWAuTAnKi4y5fDKMVdtQjHozl"
+        },
+        {
+          num: "(04)",
+          title: "UI/UX Design",
+          description: "Clean, user-centered mobile apps, landing pages, and interactive prototypes designed in Figma and Framer with purposeful motion.",
+          tags: "APP REDESIGNS · WEB INTERFACES · FIGMA PROTOTYPES",
+          coverDriveId: "1ncCOiHueaR-zBVjIN-trF3reo13nDdW1"
+        }
+      ],
+
+      // Section 6: Client Ratings & Feedback
+      reviews: [
+        {
+          name: "Himel Sheikh",
+          role: "Dr. Sheikh",
+          rating: 5,
+          quote: "“You are the best designer i've ever seen in my life”"
+        },
+        {
+          name: "Mim",
+          role: "Renata PLC",
+          rating: 5,
+          quote: "“Great Work! Perfect!”"
+        },
+        {
+          name: "Shuvo Khandakar",
+          role: "Doctor",
+          rating: 5,
+          quote: "“I am a big fan of your work”"
+        },
+        {
+          name: "Mir Munna",
+          role: "Roots of Biology",
+          rating: 5,
+          quote: "“Your work is always perfect! no word!”"
+        }
+      ],
+
+      // Section 9: Design Tutorials, Shorts & Readable Blog Articles
+      resources: [
+        {
+          id: "res-tut-1",
+          kind: "tutorial",
+          badge: "TUTORIAL · 16:9",
+          meta: "PHOTOSHOP · 12:40",
+          title: "Lighting & Color Compositing for Product Posters (Placeholder)",
+          excerpt: "Step-by-step breakdown of rim lighting, depth masking, and dramatic studio contrast in Photoshop.",
+          youtubeUrl: "",
+          format: "full"
+        },
+        {
+          id: "res-tut-2",
+          kind: "tutorial",
+          badge: "TUTORIAL · 16:9",
+          meta: "ILLUSTRATOR · 15:10",
+          title: "Building Geometric Grid Logos That Scale Cleanly (Placeholder)",
+          excerpt: "How to move from raw paper sketches to balanced optical geometry and export bulletproof brand vectors.",
+          youtubeUrl: "",
+          format: "full"
+        },
+        {
+          id: "res-short-1",
+          kind: "short",
+          badge: "DESIGN SHORT · 9:16",
+          meta: "QUICK TIP · 0:48",
+          title: "3 Thumbnail Typography Fixes in 45 Seconds (Placeholder)",
+          excerpt: "Instant contrast, kerning, and silhouette tricks to double readability on small phone screens.",
+          youtubeUrl: "",
+          format: "short"
+        },
+        {
+          id: "res-short-2",
+          kind: "short",
+          badge: "DESIGN SHORT · 9:16",
+          meta: "FIGMA · 0:55",
+          title: "Auto-Layout Grid Trick for Clean Mobile UI (Placeholder)",
+          excerpt: "A fast Figma workflow to keep spacing rhythmic across every breakpoint without manual nudging.",
+          youtubeUrl: "",
+          format: "short"
+        },
+        {
+          id: "res-blog-1",
+          kind: "blog",
+          badge: "BLOG · ESSAY",
+          meta: "4 MIN READ",
+          title: "Why Visual Hierarchy Beats Fancy Effects in Thumbnail Design",
+          excerpt: "Viewers decide whether to click in under 300 milliseconds. Here is why clarity, emotion, and focal weight outperform overloaded glow effects every time.",
+          article: {
+            subtitle: "In a crowded YouTube feed, simplicity is not minimal — it is a competitive weapon.",
+            date: "Design Notes · Hex Design",
+            paragraphs: [
+              "Most struggling thumbnails share the exact same problem: too many ideas competing at equal volume. When a viewer scrolls past ten videos per second on a 6-inch mobile display, complex textures, neon strokes, and six-word sentences collapse into visual noise.",
+              "High-performing thumbnails follow a strict 3-element budget: one unmistakable focal subject, one emotional or narrative hook, and at most two to three punchy words that complement — never repeat — the video title.",
+              "Before touching layer styles or gradients, zoom your canvas out to 10%. If you cannot immediately tell what the story is, where the eye lands first, and what emotion the frame carries, no amount of Photoshop glow will rescue the click-through rate."
+            ],
+            takeaways: [
+              "Audit every thumbnail at 10% zoom and in grayscale to verify pure luminance contrast.",
+              "Limit text to 2–3 words that create curiosity rather than repeating the video title.",
+              "Separate foreground subject from background using depth blur and directional rim light instead of harsh drop shadows.",
+              "Protect the bottom-right corner where YouTube's timestamp pill covers your layout."
+            ]
+          }
+        },
+        {
+          id: "res-blog-2",
+          kind: "blog",
+          badge: "BLOG · ESSAY",
+          meta: "5 MIN READ",
+          title: "Designing Against AI Slop: The 60-30-10 Rule & Intentional Typography",
+          excerpt: "Generic AI graphics flood every feed with glossy sameness. Learn how disciplined color ratios, optical kerning, and human taste create unmistakable brands.",
+          article: {
+            subtitle: "Taste, restraint, and deliberate grid tension are what make design feel undeniably human.",
+            date: "Brand Craft · Hex Design",
+            paragraphs: [
+              "We are living through the loudest era of visual content in history. Automated prompts can churn out hyper-saturated illustrations in seconds — yet audiences are developing instant blindness to anything that feels synthetic, symmetrical, and soulless.",
+              "Human craft stands out through restraint. Applying the classic 60-30-10 visual balance — 60% calm negative space or canvas, 30% structured supporting surface, and 10% decisive contrast — gives a poster or interface breathing room that immediately signals authority.",
+              "Pair that spatial discipline with intentional typography: tight negative tracking on bold display headlines paired with crisp, legible UI body copy. When every margin, alignment axis, and letter spacing choice is deliberate, people feel the difference before they can even explain why."
+            ],
+            takeaways: [
+              "Treat whitespace as an active structural element, not empty space waiting to be filled.",
+              "Stick to two complementary typefaces: one high-character display font and one neutral workhorse sans-serif.",
+              "Build contrast through scale jumps (e.g., 12px uppercase eyebrows beside 96px display headlines) rather than adding extra colors.",
+              "Always ask: what can I remove from this layout so the core message hits twice as hard?"
+            ]
+          }
+        }
+      ]
+    };
+
+    /* ========================================================================
+       1. GOOGLE DRIVE IMAGE LOADER WITH MULTI-STEP FALLBACK
+       Primary: https://drive.google.com/thumbnail?id={id}&sz=w{size}
+       Fallback 1: https://lh3.googleusercontent.com/d/{id}
+       Fallback 2: Clean monochrome placeholder if offline/restricted
+       ======================================================================== */
+    function gdriveImg(id, size = 1600) {
+      return `https://drive.google.com/thumbnail?id=${id}&sz=w${size}`;
+    }
+
+    function attachDriveFallback(img, id, size = 1600, label = "HEX", setInitialSrc = true) {
+      img.dataset.fallbackStage = "0";
+      img.onerror = function () {
+        const stage = Number(this.dataset.fallbackStage || "0");
+        if (stage === 0) {
+          this.dataset.fallbackStage = "1";
+          this.src = `https://lh3.googleusercontent.com/d/${id}`;
+        } else if (stage === 1) {
+          this.dataset.fallbackStage = "2";
+          const safeText = encodeURIComponent(label.slice(0, 18));
+          this.src = `https://placehold.co/${Math.min(size, 800)}x${Math.min(Math.round(size * 0.75), 600)}/191919/EDEDED?text=${safeText}`;
+        } else {
+          this.onerror = null;
+        }
+      };
+      if (setInitialSrc) {
+        img.src = gdriveImg(id, size);
+      }
+    }
+
+    function hydrateStaticDriveImages() {
+      document.querySelectorAll("img[data-gdrive-id]").forEach((img) => {
+        const id = img.getAttribute("data-gdrive-id");
+        const fallbackText = img.getAttribute("data-fallback-text") || "HEX";
+        // Static images already have their primary src set in HTML; attach fallback without double-fetching
+        attachDriveFallback(img, id, 1600, fallbackText, false);
+        // If image already failed before DOMContentLoaded, trigger fallback immediately
+        if (img.complete && img.naturalWidth === 0) {
+          img.onerror();
+        }
+      });
+    }
+
+    /* ========================================================================
+       2. YOUTUBE URL PARSER
+       ======================================================================== */
+    function extractYouTubeId(urlOrId) {
+      if (!urlOrId || typeof urlOrId !== "string") return null;
+      const trimmed = urlOrId.trim();
+      if (!trimmed) return null;
+      if (/^[a-zA-Z0-9_-]{11}$/.test(trimmed)) return trimmed;
+      const match = trimmed.match(
+        /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/
+      );
+      return match && match[1] ? match[1] : null;
+    }
+
+    /* ========================================================================
+       3. TOAST NOTIFICATION (NO alert() / confirm())
+       ======================================================================== */
+    let toastTimer = null;
+    function showToast(message) {
+      const toast = document.getElementById("oxToast");
+      if (!toast) return;
+      toast.textContent = message;
+      toast.classList.add("is-visible");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.remove("is-visible");
+      }, 2800);
+    }
+
+    /* ========================================================================
+       4. CLIENT LOGO MARQUEE (2X SEAMLESS TRACK)
+       ======================================================================== */
+    function renderClientMarquee() {
+      const track = document.getElementById("clientMarqueeTrack");
+      if (!track) return;
+
+      const asteriskSvg = `
+        <svg class="w-6 h-6 text-[#0F0F0F] opacity-75 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+          <path d="M12 3.5v17M4.5 7.5l15 9M19.5 7.5l-15 9" />
+        </svg>
+      `;
+
+      const createGroup = (isDuplicate) => {
+        const group = document.createElement("div");
+        group.className = "ox-marquee__group";
+        if (isDuplicate) group.setAttribute("aria-hidden", "true");
+
+        PORTFOLIO_DATA.clients.forEach((client) => {
+          const pill = document.createElement("div");
+          pill.className = "client-pill";
+
+          const logoBox = document.createElement("span");
+          logoBox.className = "client-pill__logo-box";
+
+          const img = document.createElement("img");
+          img.alt = `${client.name} logo`;
+          img.loading = "lazy";
+          attachDriveFallback(img, client.driveId, 1000, client.name.slice(0, 6), true);
+          logoBox.appendChild(img);
+
+          const label = document.createElement("span");
+          label.className = "font-display text-[20px] sm:text-[22px] tracking-[-0.02em] text-[#0F0F0F] whitespace-nowrap";
+          label.textContent = client.name;
+
+          pill.appendChild(logoBox);
+          pill.appendChild(label);
+          group.appendChild(pill);
+
+          const divWrap = document.createElement("span");
+          divWrap.innerHTML = asteriskSvg;
+          group.appendChild(divWrap.firstElementChild);
+        });
+
+        return group;
+      };
+
+      track.innerHTML = "";
+      track.appendChild(createGroup(false));
+      track.appendChild(createGroup(true));
+    }
+
+    /* ========================================================================
+       5. BEHANCE PROJECTS (OX HOVER-PREVIEW ROWS + CARD GRID TOGGLE)
+       ======================================================================== */
+    function renderBehanceProjects() {
+      const listContainer = document.getElementById("behanceListContainer");
+      const gridContainer = document.getElementById("behanceGridContainer");
+      if (!listContainer || !gridContainer) return;
+
+      listContainer.innerHTML = "";
+      gridContainer.innerHTML = "";
+
+      PORTFOLIO_DATA.behanceProjects.forEach((project, idx) => {
+        // List View Row
+        const row = document.createElement("div");
+        row.className = "ox-project-row flex-col lg:flex-row items-start lg:items-center reveal-up";
+        row.style.setProperty("--reveal-delay", `${idx * 55}ms`);
+        row.setAttribute("role", "button");
+        row.setAttribute("tabindex", "0");
+        row.setAttribute("aria-label", `Open Behance project: ${project.title}`);
+
+        row.innerHTML = `
+          <div class="ox-project-row__preview" aria-hidden="true">
+            <img class="w-full h-full object-cover" alt="" loading="lazy" />
+          </div>
+
+          <div class="lg:hidden w-full aspect-[16/10] rounded-[16px] overflow-hidden bg-[#191919] mb-2">
+            <img class="w-full h-full object-cover" alt="${project.title}" loading="lazy" />
+          </div>
+
+          <div class="ox-project-row__num text-[14px] font-semibold text-[#6B6B6B] lg:w-[58px] flex-shrink-0">${project.num}</div>
+
+          <div class="ox-project-row__title font-display uppercase text-[26px] sm:text-[34px] lg:text-[36px] xl:text-[42px] leading-[1.02] tracking-[-0.02em] flex-1 pr-2">
+            ${project.title}
+          </div>
+
+          <div class="ox-project-row__meta flex flex-row lg:flex-col gap-3 lg:gap-0.5 text-[14px] font-medium text-[#6B6B6B] lg:w-[175px] flex-shrink-0">
+            <span>${project.type}</span>
+            <span class="opacity-75">${project.role}</span>
+          </div>
+
+          <div class="flex items-center justify-between lg:justify-end gap-5 w-full lg:w-auto flex-shrink-0 mt-1 lg:mt-0">
+            <span class="ox-project-row__date text-[14px] font-semibold text-[#0F0F0F] lg:w-[115px] lg:text-right">${project.date}</span>
+            <span class="ox-project-row__go" aria-hidden="true">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 17L17 7M9 7h8v8" />
+              </svg>
+            </span>
+          </div>
+        `;
+
+        row.querySelectorAll("img").forEach((im) => attachDriveFallback(im, project.coverDriveId, 1200, project.type, true));
+
+        const openHandler = () => openBehanceModal(project);
+        row.addEventListener("click", openHandler);
+        row.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            openHandler();
+          }
+        });
+        listContainer.appendChild(row);
+
+        // Card Grid Item
+        const card = document.createElement("article");
+        card.className = "group bg-white rounded-[22px] overflow-hidden border border-[rgba(15,15,15,0.08)] cursor-pointer flex flex-col transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_48px_-20px_rgba(0,0,0,0.22)]";
+        card.setAttribute("role", "button");
+        card.setAttribute("tabindex", "0");
+
+        card.innerHTML = `
+          <div class="relative aspect-[16/11] bg-[#191919] overflow-hidden">
+            <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="${project.title}" loading="lazy" />
+            <span class="absolute top-3.5 left-3.5 px-3 py-1 rounded-full bg-[rgba(15,15,15,0.78)] backdrop-blur-md text-white text-[11px] font-semibold tracking-[0.1em] uppercase">${project.num} · ${project.type}</span>
+          </div>
+          <div class="p-6 flex flex-col justify-between flex-1 gap-4">
+            <div>
+              <h3 class="font-display text-[22px] uppercase leading-[1.1] text-[#0F0F0F]">${project.title}</h3>
+              <p class="text-[13px] font-medium text-[#6B6B6B] mt-2">${project.role} · ${project.date}</p>
+            </div>
+            <div class="flex items-center justify-between pt-3 border-t border-[rgba(15,15,15,0.09)]">
+              <span class="text-[13px] font-semibold text-[#0F0F0F]">View Case Study</span>
+              <span class="w-9 h-9 rounded-full bg-[#0F0F0F] text-white flex items-center justify-center transition-transform duration-300 group-hover:rotate-45">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
+              </span>
+            </div>
+          </div>
+        `;
+        attachDriveFallback(card.querySelector("img"), project.coverDriveId, 1200, project.type, true);
+        card.addEventListener("click", openHandler);
+        card.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            openHandler();
+          }
+        });
+        gridContainer.appendChild(card);
+      });
+    }
+
+    function initWorkViewToggle() {
+      const toggle = document.getElementById("workViewToggle");
+      const slider = document.getElementById("workViewSlider");
+      const listEl = document.getElementById("behanceListContainer");
+      const gridEl = document.getElementById("behanceGridContainer");
+      if (!toggle) return;
+
+      const btns = toggle.querySelectorAll("[data-work-view]");
+      btns.forEach((btn, idx) => {
+        btn.addEventListener("click", () => {
+          const mode = btn.getAttribute("data-work-view");
+          btns.forEach((b) => {
+            b.classList.remove("is-active");
+            b.setAttribute("aria-selected", "false");
+          });
+          btn.classList.add("is-active");
+          btn.setAttribute("aria-selected", "true");
+          slider.style.transform = `translateX(${idx * 100}%)`;
+
+          if (mode === "grid") {
+            listEl.classList.add("hidden");
+            gridEl.classList.remove("hidden");
+          } else {
+            gridEl.classList.add("hidden");
+            listEl.classList.remove("hidden");
+          }
+        });
+      });
+    }
+
+    /* ========================================================================
+       6. TECH CONTENT (FULL VIDEOS 16:9 & SHORTS 9:16 + TOGGLE)
+       ======================================================================== */
+    function createVideoCard(item, format) {
+      const ytId = extractYouTubeId(item.youtubeUrl);
+      const isShort = format === "short";
+      const card = document.createElement("article");
+      card.className = "group bg-white rounded-[22px] overflow-hidden border border-[rgba(15,15,15,0.08)] cursor-pointer flex flex-col transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_48px_-20px_rgba(0,0,0,0.22)]";
+      card.setAttribute("role", "button");
+      card.setAttribute("tabindex", "0");
+      card.setAttribute("aria-label", `Play video: ${item.title}`);
+
+      const thumbBg = ytId
+        ? `<img src="https://i.ytimg.com/vi/${ytId}/hqdefault.jpg" alt="${item.title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />`
+        : `<div class="w-full h-full bg-[#141414] flex flex-col items-center justify-center relative overflow-hidden p-5">
+             <div class="absolute inset-0 opacity-[0.07]" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 18px 18px;"></div>
+             <span class="font-display text-[44px] sm:text-[52px] tracking-[-0.04em] text-white/15 select-none">${item.placeholderCode || (isShort ? "9:16" : "16:9")}</span>
+             <span class="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#8E8E8E] mt-1">Awaiting YouTube Link</span>
+           </div>`;
+
+      card.innerHTML = `
+        <div class="relative ${isShort ? "aspect-[9/14]" : "aspect-video"} bg-[#141414] overflow-hidden">
+          ${thumbBg}
+          <div class="absolute inset-0 bg-black/25 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+            <span class="w-14 h-14 rounded-full bg-white text-[#0F0F0F] flex items-center justify-center shadow-xl transition-transform duration-300 group-hover:scale-110">
+              <svg class="w-6 h-6 ml-0.5" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </span>
+          </div>
+          <span class="absolute top-3.5 left-3.5 px-3 py-1 rounded-full bg-[rgba(15,15,15,0.82)] text-white text-[10px] font-semibold uppercase tracking-[0.13em]">${isShort ? "SHORTS" : "FULL VIDEO"}</span>
+          ${item.duration ? `<span class="absolute bottom-3 right-3 px-2.5 py-1 rounded-full bg-[rgba(15,15,15,0.82)] text-white text-[11px] font-semibold tabular-nums">${item.duration}</span>` : ""}
+        </div>
+        <div class="p-5 sm:p-6 flex flex-col gap-2 flex-1 justify-between">
+          <div>
+            <p class="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#6B6B6B]">${item.category}</p>
+            <h3 class="font-display text-[20px] uppercase leading-[1.15] text-[#0F0F0F] mt-1.5">${item.title}</h3>
+          </div>
+          <div class="pt-3 mt-1 border-t border-[rgba(15,15,15,0.08)] flex items-center justify-between text-[13px] font-semibold text-[#0F0F0F]">
+            <span>Play in popup</span>
+            <span aria-hidden="true">▶</span>
+          </div>
+        </div>
+      `;
+
+      const launch = () => openVideoModal({
+        title: item.title,
+        meta: `${item.category.toUpperCase()} · ${isShort ? "YOUTUBE SHORT" : "FULL CONTENT"}`,
+        youtubeUrl: item.youtubeUrl,
+        format
+      });
+
+      card.addEventListener("click", launch);
+      card.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          launch();
+        }
+      });
+
+      return card;
+    }
+
+    function renderTechContent() {
+      const fullGrid = document.getElementById("techFullGrid");
+      const shortsGrid = document.getElementById("techShortsGrid");
+      if (!fullGrid || !shortsGrid) return;
+
+      fullGrid.innerHTML = "";
+      shortsGrid.innerHTML = "";
+
+      PORTFOLIO_DATA.techFullVideos.forEach((v) => fullGrid.appendChild(createVideoCard(v, "full")));
+      PORTFOLIO_DATA.techShorts.forEach((s) => shortsGrid.appendChild(createVideoCard(s, "short")));
+    }
+
+    function initTechToggle() {
+      const toggle = document.getElementById("techToggle");
+      const slider = document.getElementById("techToggleSlider");
+      const fullGrid = document.getElementById("techFullGrid");
+      const shortsGrid = document.getElementById("techShortsGrid");
+      if (!toggle) return;
+
+      const btns = toggle.querySelectorAll("[data-tech-tab]");
+      btns.forEach((btn, idx) => {
+        btn.addEventListener("click", () => {
+          const tab = btn.getAttribute("data-tech-tab");
+          btns.forEach((b) => {
+            b.classList.remove("is-active");
+            b.setAttribute("aria-selected", "false");
+          });
+          btn.classList.add("is-active");
+          btn.setAttribute("aria-selected", "true");
+          slider.style.transform = `translateX(${idx * 100}%)`;
+
+          if (tab === "shorts") {
+            fullGrid.classList.add("hidden");
+            shortsGrid.classList.remove("hidden");
+          } else {
+            shortsGrid.classList.add("hidden");
+            fullGrid.classList.remove("hidden");
+          }
+        });
+      });
+    }
+
+    /* ========================================================================
+       7. SERVICES ACCORDION (ITEM 01 OPEN BY DEFAULT)
+       ======================================================================== */
+    function renderServicesAccordion() {
+      const container = document.getElementById("servicesAccordion");
+      if (!container) return;
+
+      container.innerHTML = "";
+      PORTFOLIO_DATA.services.forEach((service, index) => {
+        const isOpen = index === 0;
+        const item = document.createElement("div");
+        item.className = `ox-accordion-item${isOpen ? " is-open" : ""}`;
+
+        item.innerHTML = `
+          <button type="button" class="ox-accordion-header" aria-expanded="${isOpen}">
+            <span class="text-[14px] font-medium text-[#8E8E8E] w-12 flex-shrink-0">${service.num}</span>
+            <h3 class="ox-h4 ox-accordion-title flex-1">${service.title}</h3>
+            <span class="ox-accordion-toggle" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <path d="M12 5v14M5 12h14" />
+              </svg>
+            </span>
+          </button>
+          <div class="ox-accordion-body-wrap">
+            <div class="ox-accordion-body-inner">
+              <div class="pb-8 sm:pl-[64px] flex flex-col sm:flex-row items-start gap-6 sm:gap-8">
+                <div class="flex-1 flex flex-col gap-5">
+                  <p class="text-[15px] sm:text-[16px] text-[#BDBDBD] leading-[1.6]">${service.description}</p>
+                  <p class="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#8E8E8E]">${service.tags}</p>
+                </div>
+                <div class="w-full sm:w-[170px] h-[180px] sm:h-[170px] rounded-[14px] overflow-hidden bg-[#191919] flex-shrink-0 border border-[rgba(255,255,255,0.1)]">
+                  <img class="w-full h-full object-cover" alt="${service.title} preview" loading="lazy" />
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+
+        attachDriveFallback(item.querySelector("img"), service.coverDriveId, 800, service.title, true);
+
+        const headerBtn = item.querySelector(".ox-accordion-header");
+        headerBtn.addEventListener("click", () => {
+          const currentlyOpen = item.classList.contains("is-open");
+          container.querySelectorAll(".ox-accordion-item").forEach((other) => {
+            other.classList.remove("is-open");
+            other.querySelector(".ox-accordion-header").setAttribute("aria-expanded", "false");
+          });
+          if (!currentlyOpen) {
+            item.classList.add("is-open");
+            headerBtn.setAttribute("aria-expanded", "true");
+          }
+        });
+
+        container.appendChild(item);
+      });
+    }
+
+    /* ========================================================================
+       8. CLIENT REVIEWS SLIDER
+       ======================================================================== */
+    let currentReviewIndex = 0;
+
+    function renderReview(index) {
+      const reviews = PORTFOLIO_DATA.reviews;
+      const review = reviews[index];
+      const quoteEl = document.getElementById("reviewQuote");
+      const avatarEl = document.getElementById("reviewAvatar");
+      const nameEl = document.getElementById("reviewName");
+      const roleEl = document.getElementById("reviewRole");
+      const starsEl = document.getElementById("reviewStars");
+      const counterEl = document.getElementById("reviewCounter");
+      const progressEl = document.getElementById("reviewProgress");
+
+      if (!quoteEl) return;
+
+      quoteEl.style.opacity = "0";
+      setTimeout(() => {
+        quoteEl.textContent = review.quote;
+        avatarEl.textContent = review.name.charAt(0).toUpperCase();
+        nameEl.textContent = review.name;
+        roleEl.textContent = review.role;
+
+        starsEl.innerHTML = Array.from({ length: review.rating }).map(() => `
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2l2.9 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14 2 9.27l7.1-1.01L12 2z"/>
+          </svg>
+        `).join("");
+
+        const numStr = String(index + 1).padStart(2, "0");
+        const totalStr = String(reviews.length).padStart(2, "0");
+        counterEl.textContent = `${numStr} / ${totalStr}`;
+        progressEl.style.width = `${((index + 1) / reviews.length) * 100}%`;
+
+        document.querySelectorAll("#reviewPills [data-review-idx]").forEach((pill) => {
+          const isCurrent = Number(pill.getAttribute("data-review-idx")) === index;
+          pill.className = isCurrent
+            ? "px-3.5 py-1.5 rounded-full text-[12px] font-semibold bg-[#0F0F0F] text-white border border-[#0F0F0F] transition-colors cursor-pointer"
+            : "px-3.5 py-1.5 rounded-full text-[12px] font-semibold bg-white text-[#6B6B6B] border border-[rgba(15,15,15,0.12)] hover:text-[#0F0F0F] transition-colors cursor-pointer";
+        });
+
+        quoteEl.style.opacity = "1";
+      }, 150);
+    }
+
+    function initReviewsSlider() {
+      const prevBtn = document.getElementById("prevReviewBtn");
+      const nextBtn = document.getElementById("nextReviewBtn");
+      const region = document.getElementById("reviewSliderRegion");
+      const pillsWrap = document.getElementById("reviewPills");
+      const total = PORTFOLIO_DATA.reviews.length;
+
+      if (pillsWrap) {
+        pillsWrap.innerHTML = "";
+        PORTFOLIO_DATA.reviews.forEach((rev, i) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.setAttribute("data-review-idx", String(i));
+          btn.textContent = `${rev.name} · ${rev.role}`;
+          btn.addEventListener("click", () => {
+            currentReviewIndex = i;
+            renderReview(currentReviewIndex);
+          });
+          pillsWrap.appendChild(btn);
+        });
+      }
+
+      const step = (dir) => {
+        currentReviewIndex = (currentReviewIndex + dir + total) % total;
+        renderReview(currentReviewIndex);
+      };
+
+      if (prevBtn) prevBtn.addEventListener("click", () => step(-1));
+      if (nextBtn) nextBtn.addEventListener("click", () => step(1));
+      if (region) {
+        region.addEventListener("keydown", (e) => {
+          if (e.key === "ArrowLeft") step(-1);
+          if (e.key === "ArrowRight") step(1);
+        });
+      }
+
+      renderReview(0);
+    }
+
+    /* ========================================================================
+       9. PRICING CURRENCY TOGGLE (BDT / USD) + CONTACT AUTO-PRE-SELECT
+       ======================================================================== */
+    let activeCurrency = "BDT";
+
+    function initPricing() {
+      const toggle = document.getElementById("currencyToggle");
+      const slider = document.getElementById("currencySlider");
+      const amounts = document.querySelectorAll(".pricing-amount");
+
+      if (toggle) {
+        const btns = toggle.querySelectorAll("[data-currency]");
+        btns.forEach((btn, idx) => {
+          btn.addEventListener("click", () => {
+            const currency = btn.getAttribute("data-currency");
+            if (currency === activeCurrency) return;
+            activeCurrency = currency;
+
+            btns.forEach((b) => {
+              b.classList.remove("is-active");
+              b.setAttribute("aria-selected", "false");
+            });
+            btn.classList.add("is-active");
+            btn.setAttribute("aria-selected", "true");
+            slider.style.transform = `translateX(${idx * 100}%)`;
+
+            amounts.forEach((el) => {
+              el.classList.remove("price-animate");
+              void el.offsetWidth;
+              el.textContent = currency === "USD" ? el.dataset.usd : el.dataset.bdt;
+              el.classList.add("price-animate");
+            });
+          });
+        });
+      }
+
+      document.querySelectorAll(".select-package-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const pkg = btn.getAttribute("data-package");
+          const select = document.getElementById("selectedPackage");
+          const cardAmount = btn.closest("article")?.querySelector(".pricing-amount");
+          const activePriceLabel = cardAmount ? cardAmount.textContent.trim() : "";
+
+          if (select && pkg) {
+            select.value = pkg;
+            select.classList.remove("package-pulse");
+            void select.offsetWidth;
+            select.classList.add("package-pulse");
+          }
+          scrollToSelector("#contact");
+          showToast(
+            activePriceLabel
+              ? `Selected: ${pkg.split(" (")[0]} (${activePriceLabel} ${activeCurrency})`
+              : `Selected: ${pkg}`
+          );
+        });
+      });
+    }
+
+    /* ========================================================================
+       10. SECTION 9: TUTORIALS, SHORTS & READABLE BLOGS
+       ======================================================================== */
+    function renderResources(filter = "all") {
+      const grid = document.getElementById("resourcesGrid");
+      if (!grid) return;
+
+      grid.innerHTML = "";
+      const filtered = PORTFOLIO_DATA.resources.filter((item) => filter === "all" || item.kind === filter);
+
+      filtered.forEach((item) => {
+        const isBlog = item.kind === "blog";
+        const isShort = item.kind === "short";
+        const ytId = !isBlog ? extractYouTubeId(item.youtubeUrl) : null;
+
+        const card = document.createElement("article");
+        card.className = "group bg-white rounded-[22px] overflow-hidden border border-[rgba(15,15,15,0.08)] cursor-pointer flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_48px_-20px_rgba(0,0,0,0.2)]";
+        card.setAttribute("role", "button");
+        card.setAttribute("tabindex", "0");
+
+        if (isBlog) {
+          card.innerHTML = `
+            <div class="p-6 sm:p-7 flex flex-col gap-4 flex-1">
+              <div class="flex items-center justify-between gap-2">
+                <span class="px-3 py-1 rounded-full bg-[#0F0F0F] text-white text-[10px] font-semibold uppercase tracking-[0.13em]">${item.badge}</span>
+                <span class="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#8E8E8E]">${item.meta}</span>
+              </div>
+              <h3 class="font-display text-[24px] sm:text-[26px] uppercase leading-[1.1] text-[#0F0F0F] mt-1">${item.title}</h3>
+              <p class="text-[14px] text-[#6B6B6B] leading-[1.6]">${item.excerpt}</p>
+            </div>
+            <div class="px-6 sm:px-7 py-4 border-t border-[rgba(15,15,15,0.09)] flex items-center justify-between text-[13px] font-semibold text-[#0F0F0F]">
+              <span>Read Article</span>
+              <span class="w-8 h-8 rounded-full bg-[#EDEDED] group-hover:bg-[#0F0F0F] group-hover:text-white flex items-center justify-center transition-colors">→</span>
+            </div>
+          `;
+        } else {
+          const thumbHtml = ytId
+            ? `<img src="https://i.ytimg.com/vi/${ytId}/hqdefault.jpg" alt="${item.title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />`
+            : `<div class="w-full h-full bg-[#141414] flex flex-col items-center justify-center relative overflow-hidden">
+                 <div class="absolute inset-0 opacity-[0.07]" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 16px 16px;"></div>
+                 <span class="font-display text-[42px] text-white/15">${isShort ? "9:16" : "16:9"}</span>
+               </div>`;
+
+          card.innerHTML = `
+            <div class="relative aspect-video bg-[#141414] overflow-hidden">
+              ${thumbHtml}
+              <div class="absolute inset-0 bg-black/25 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+                <span class="w-12 h-12 rounded-full bg-white text-[#0F0F0F] flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-110">
+                  <svg class="w-5 h-5 ml-0.5" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </span>
+              </div>
+              <span class="absolute top-3.5 left-3.5 px-3 py-1 rounded-full bg-[rgba(15,15,15,0.82)] text-white text-[10px] font-semibold uppercase tracking-[0.12em]">${item.badge}</span>
+            </div>
+            <div class="p-6 flex flex-col gap-3 flex-1 justify-between">
+              <div>
+                <p class="text-[11px] font-semibold uppercase tracking-[0.13em] text-[#6B6B6B]">${item.meta}</p>
+                <h3 class="font-display text-[21px] uppercase leading-[1.15] text-[#0F0F0F] mt-1.5">${item.title}</h3>
+                <p class="text-[14px] text-[#6B6B6B] leading-[1.55] mt-2">${item.excerpt}</p>
+              </div>
+              <div class="pt-3 border-t border-[rgba(15,15,15,0.09)] flex items-center justify-between text-[13px] font-semibold text-[#0F0F0F]">
+                <span>Play in popup</span>
+                <span aria-hidden="true">▶</span>
+              </div>
+            </div>
+          `;
+        }
+
+        const handleOpen = () => {
+          if (isBlog) {
+            openBlogModal(item);
+          } else {
+            openVideoModal({
+              title: item.title,
+              meta: `${item.badge} · ${item.meta}`,
+              youtubeUrl: item.youtubeUrl,
+              format: item.format || "full"
+            });
+          }
+        };
+
+        card.addEventListener("click", handleOpen);
+        card.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            handleOpen();
+          }
+        });
+
+        grid.appendChild(card);
+      });
+    }
+
+    function initResourceFilters() {
+      const container = document.getElementById("resourceFilters");
+      if (!container) return;
+
+      const btns = container.querySelectorAll(".resource-filter-btn");
+      btns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const filter = btn.getAttribute("data-filter");
+          btns.forEach((b) => {
+            b.classList.remove("bg-[#0F0F0F]", "text-white", "border-[#0F0F0F]");
+            b.classList.add("bg-white", "text-[#6B6B6B]", "border-[rgba(15,15,15,0.12)]");
+          });
+          btn.classList.remove("bg-white", "text-[#6B6B6B]", "border-[rgba(15,15,15,0.12)]");
+          btn.classList.add("bg-[#0F0F0F]", "text-white", "border-[#0F0F0F]");
+          renderResources(filter);
+        });
+      });
+
+      renderResources("all");
+    }
+
+    /* ========================================================================
+       11. MODAL CONTROLLERS (BEHANCE, UNIFIED YOUTUBE PLAYER, BLOG READER)
+       ======================================================================== */
+    let lenisInstance = null;
+
+    function lockScroll() {
+      document.body.style.overflow = "hidden";
+      if (lenisInstance) lenisInstance.stop();
+    }
+
+    function unlockScroll() {
+      document.body.style.overflow = "";
+      if (lenisInstance) lenisInstance.start();
+    }
+
+    function openBehanceModal(project) {
+      const modal = document.getElementById("behanceModal");
+      const titleEl = document.getElementById("behanceModalTitle");
+      const metaEl = document.getElementById("behanceModalMeta");
+      const extLink = document.getElementById("behanceExternalLink");
+      const iframe = document.getElementById("behanceIframe");
+      const loader = document.getElementById("behanceLoader");
+
+      titleEl.textContent = project.title;
+      metaEl.textContent = `${project.type.toUpperCase()} · ${project.role.toUpperCase()} · ${project.date.toUpperCase()}`;
+      extLink.href = project.url;
+
+      loader.style.display = "flex";
+      iframe.onload = () => {
+        loader.style.display = "none";
+      };
+      iframe.src = `https://www.behance.net/embed/project/${project.behanceId}?ilo0=1`;
+
+      modal.classList.add("is-open");
+      lockScroll();
+    }
+
+    function openVideoModal({ title, meta, youtubeUrl, format }) {
+      const modal = document.getElementById("videoModal");
+      const dialog = document.getElementById("videoModalDialog");
+      const frameWrap = document.getElementById("videoFrameWrap");
+      const titleEl = document.getElementById("videoModalTitle");
+      const metaEl = document.getElementById("videoModalMeta");
+      const iframe = document.getElementById("youtubeIframe");
+      const placeholder = document.getElementById("videoPlaceholderState");
+      const placeholderHeading = document.getElementById("videoPlaceholderHeading");
+
+      const isShort = format === "short";
+      titleEl.textContent = title;
+      metaEl.textContent = meta;
+
+      if (isShort) {
+        dialog.classList.remove("max-w-[960px]");
+        dialog.classList.add("max-w-[395px]");
+        frameWrap.classList.remove("aspect-video");
+        frameWrap.classList.add("aspect-[9/16]");
+      } else {
+        dialog.classList.remove("max-w-[395px]");
+        dialog.classList.add("max-w-[960px]");
+        frameWrap.classList.remove("aspect-[9/16]");
+        frameWrap.classList.add("aspect-video");
+      }
+
+      const ytId = extractYouTubeId(youtubeUrl);
+      if (ytId) {
+        placeholder.classList.add("hidden");
+        iframe.classList.remove("hidden");
+        iframe.src = `https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0`;
+      } else {
+        iframe.src = "";
+        iframe.classList.add("hidden");
+        placeholderHeading.textContent = title;
+        placeholder.classList.remove("hidden");
+      }
+
+      modal.classList.add("is-open");
+      lockScroll();
+    }
+
+    function openBlogModal(item) {
+      const modal = document.getElementById("blogModal");
+      const catEl = document.getElementById("blogModalCategory");
+      const readEl = document.getElementById("blogModalReadTime");
+      const bodyEl = document.getElementById("blogModalBody");
+
+      catEl.textContent = item.badge;
+      readEl.textContent = item.meta;
+
+      const art = item.article;
+      bodyEl.innerHTML = `
+        <div class="pb-5 border-b border-[rgba(15,15,15,0.12)]">
+          <p class="text-[12px] font-semibold uppercase tracking-[0.14em] text-[#6B6B6B]">${art.date}</p>
+          <h2 id="blogModalTitle" class="font-display text-[32px] sm:text-[42px] uppercase leading-[0.98] tracking-[-0.02em] text-[#0F0F0F] mt-2">${item.title}</h2>
+          <p class="text-[17px] sm:text-[18px] font-medium text-[#3A3A3A] leading-relaxed mt-3">${art.subtitle}</p>
+        </div>
+
+        <div class="space-y-4 text-[16px] text-[#3A3A3A] leading-[1.75]">
+          ${art.paragraphs.map((p) => `<p>${p}</p>`).join("")}
+        </div>
+
+        <div class="bg-[#EDEDED] rounded-[20px] p-6 mt-4">
+          <p class="text-[12px] font-bold uppercase tracking-[0.14em] text-[#0F0F0F] mb-3.5">Key Takeaways</p>
+          <ul class="space-y-2.5 list-none m-0 p-0">
+            ${art.takeaways.map((t) => `
+              <li class="flex items-start gap-3 text-[14px] font-medium text-[#0F0F0F] leading-relaxed">
+                <span class="w-5 h-5 rounded-full bg-[#0F0F0F] text-white flex items-center justify-center flex-shrink-0 mt-0.5 text-[11px]">✓</span>
+                <span>${t}</span>
+              </li>
+            `).join("")}
+          </ul>
+        </div>
+      `;
+
+      modal.classList.add("is-open");
+      lockScroll();
+    }
+
+    function closeModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (!modal || !modal.classList.contains("is-open")) return;
+      modal.classList.remove("is-open");
+
+      if (modalId === "videoModal") {
+        const yt = document.getElementById("youtubeIframe");
+        if (yt) yt.src = "";
+      }
+      if (modalId === "behanceModal") {
+        const bh = document.getElementById("behanceIframe");
+        if (bh) bh.src = "";
+      }
+
+      unlockScroll();
+    }
+
+    function initModals() {
+      document.querySelectorAll("[data-close-modal]").forEach((btn) => {
+        btn.addEventListener("click", () => closeModal(btn.getAttribute("data-close-modal")));
+      });
+
+      ["behanceModal", "videoModal", "blogModal"].forEach((id) => {
+        const modal = document.getElementById(id);
+        if (!modal) return;
+        modal.addEventListener("click", (e) => {
+          if (e.target === modal) closeModal(id);
+        });
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          ["behanceModal", "videoModal", "blogModal"].forEach(closeModal);
+        }
+      });
+    }
+
+    /* ========================================================================
+       12. RESUME CV DOWNLOAD + DIRECT CONTACT ACTIONS (WHATSAPP / EMAIL / COPY)
+       ======================================================================== */
+    function initResumeAndContact() {
+      const cvBtn = document.getElementById("downloadCvBtn");
+      if (cvBtn) {
+        cvBtn.addEventListener("click", () => {
+          if (PORTFOLIO_DATA.cvUrl && PORTFOLIO_DATA.cvUrl.trim() !== "") {
+            window.open(PORTFOLIO_DATA.cvUrl.trim(), "_blank", "noopener,noreferrer");
+          } else {
+            showToast("Opening printable Resume PDF view...");
+            setTimeout(() => window.print(), 350);
+          }
+        });
+      }
+
+      // Copy Email using iframe-safe execCommand
+      const copyBtn = document.getElementById("copyEmailBtn");
+      const copyStatus = document.getElementById("copyEmailStatus");
+      if (copyBtn) {
+        copyBtn.addEventListener("click", () => {
+          const email = PORTFOLIO_DATA.contact.email;
+          const temp = document.createElement("textarea");
+          temp.value = email;
+          temp.style.position = "fixed";
+          temp.style.opacity = "0";
+          document.body.appendChild(temp);
+          temp.select();
+          try {
+            document.execCommand("copy");
+            if (copyStatus) copyStatus.textContent = "Copied!";
+            showToast(`Copied ${email} to clipboard`);
+            setTimeout(() => {
+              if (copyStatus) copyStatus.textContent = "Copy";
+            }, 2200);
+          } catch (err) {
+            showToast(`Email: ${email}`);
+          }
+          document.body.removeChild(temp);
+        });
+      }
+
+      function buildContactBrief() {
+        const name = (document.getElementById("clientName")?.value || "").trim() || "A potential client";
+        const email = (document.getElementById("clientEmail")?.value || "").trim() || "Not provided";
+        const pkg = document.getElementById("selectedPackage")?.value || "Custom Project";
+        const details = (document.getElementById("projectDetails")?.value || "").trim() || "I would love to discuss a new project with Hex Design.";
+        return { name, email, pkg, details };
+      }
+
+      const waBtn = document.getElementById("sendWhatsappBtn");
+      if (waBtn) {
+        waBtn.addEventListener("click", () => {
+          const { name, email, pkg, details } = buildContactBrief();
+          const msg = `Hi Hex Design!%0A%0A*Name:* ${encodeURIComponent(name)}%0A*Email:* ${encodeURIComponent(email)}%0A*Package:* ${encodeURIComponent(pkg)}%0A*Preferred Currency:* ${encodeURIComponent(activeCurrency)}%0A%0A*Project Details:*%0A${encodeURIComponent(details)}`;
+          const waUrl = `https://wa.me/${PORTFOLIO_DATA.contact.whatsappNumber}?text=${msg}`;
+          window.open(waUrl, "_blank", "noopener,noreferrer");
+          showToast("Opening WhatsApp with your project brief...");
+        });
+      }
+
+      const mailBtn = document.getElementById("sendEmailBtn");
+      if (mailBtn) {
+        mailBtn.addEventListener("click", () => {
+          const { name, email, pkg, details } = buildContactBrief();
+          const subject = encodeURIComponent(`New Project Inquiry — ${pkg} (${name})`);
+          const body = encodeURIComponent(`Hi Hex Design,\n\nName: ${name}\nEmail: ${email}\nSelected Package: ${pkg}\nPreferred Currency: ${activeCurrency}\n\nProject Details:\n${details}\n\nBest regards,\n${name}`);
+          window.location.href = `mailto:${PORTFOLIO_DATA.contact.email}?subject=${subject}&body=${body}`;
+          showToast("Opening your email client...");
+        });
+      }
+    }
+
+    /* ========================================================================
+       13. SMOOTH SCROLL (LENIS WITH NATIVE FALLBACK), MOBILE NAV & SCROLLSPY
+       ======================================================================== */
+    function scrollToSelector(selector) {
+      const target = document.querySelector(selector);
+      if (!target) return;
+      if (lenisInstance) {
+        lenisInstance.scrollTo(target, { offset: -88, duration: 1.15 });
+      } else {
+        const y = target.getBoundingClientRect().top + window.scrollY - 88;
+        window.scrollTo({ top: y, behavior: "smooth" });
+      }
+    }
+
+    function initNavigationAndLenis() {
+      try {
+        if (typeof window.Lenis === "function") {
+          lenisInstance = new window.Lenis({
+            duration: 1.1,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            smoothWheel: true
+          });
+          function raf(time) {
+            lenisInstance.raf(time);
+            requestAnimationFrame(raf);
+          }
+          requestAnimationFrame(raf);
+        }
+      } catch (e) {
+        lenisInstance = null;
+      }
+
+      const menuBtn = document.getElementById("mobileMenuBtn");
+      const drawer = document.getElementById("mobileDrawer");
+      const closeDrawer = () => {
+        if (!menuBtn || !drawer) return;
+        menuBtn.classList.remove("is-open");
+        menuBtn.setAttribute("aria-expanded", "false");
+        drawer.classList.remove("is-open");
+        drawer.setAttribute("aria-hidden", "true");
+      };
+
+      if (menuBtn && drawer) {
+        menuBtn.addEventListener("click", () => {
+          const isOpen = drawer.classList.toggle("is-open");
+          menuBtn.classList.toggle("is-open", isOpen);
+          menuBtn.setAttribute("aria-expanded", String(isOpen));
+          drawer.setAttribute("aria-hidden", String(!isOpen));
+        });
+      }
+
+      document.querySelectorAll("[data-scroll-link]").forEach((link) => {
+        link.addEventListener("click", (e) => {
+          const href = link.getAttribute("href");
+          if (href && href.startsWith("#")) {
+            e.preventDefault();
+            closeDrawer();
+            scrollToSelector(href);
+          }
+        });
+      });
+
+      const navLinks = document.querySelectorAll(".ox-nav__link[data-nav-section]");
+      const sections = ["about", "work", "services", "pricing", "contact"]
+        .map((id) => document.getElementById(id))
+        .filter(Boolean);
+
+      const spyObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const activeId = entry.target.id;
+              navLinks.forEach((l) => {
+                l.classList.toggle("is-active", l.getAttribute("data-nav-section") === activeId);
+              });
+            }
+          });
+        },
+        { rootMargin: "-35% 0px -55% 0px", threshold: 0 }
+      );
+      sections.forEach((sec) => spyObserver.observe(sec));
+    }
+
+    /* ========================================================================
+       14. SCROLL-TRIGGERED REVEALS & SUBTLE HERO PORTRAIT PARALLAX
+       ======================================================================== */
+    function initScrollReveals() {
+      const targets = document.querySelectorAll(".reveal-blur, .reveal-up, [data-reveal-line]");
+      if (!("IntersectionObserver" in window)) {
+        targets.forEach((el) => el.classList.add("is-visible"));
+        return;
+      }
+
+      const observer = new IntersectionObserver(
+        (entries, obs) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              obs.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+      );
+
+      targets.forEach((el) => observer.observe(el));
+    }
+
+    function initHeroParallax() {
+      const target = document.getElementById("heroPortraitParallax");
+      if (!target || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+      let ticking = false;
+      const update = () => {
+        const y = window.scrollY || window.pageYOffset || 0;
+        if (y < 900) {
+          const offset = Math.min(y * 0.08, 48);
+          target.style.transform = `translate3d(0, ${offset}px, 0)`;
+        }
+        ticking = false;
+      };
+
+      window.addEventListener("scroll", () => {
+        if (!ticking) {
+          requestAnimationFrame(update);
+          ticking = true;
+        }
+      }, { passive: true });
+    }
+
+    /* ========================================================================
+       15. BOOTSTRAP ON DOM READY
+       ======================================================================== */
+    document.addEventListener("DOMContentLoaded", () => {
+      hydrateStaticDriveImages();
+      renderClientMarquee();
+      renderBehanceProjects();
+      initWorkViewToggle();
+      renderTechContent();
+      initTechToggle();
+      renderServicesAccordion();
+      initReviewsSlider();
+      initPricing();
+      initResourceFilters();
+      initModals();
+      initResumeAndContact();
+      initNavigationAndLenis();
+      initScrollReveals();
+      initHeroParallax();
+    });
+  </script>
+</body>
+</html>
